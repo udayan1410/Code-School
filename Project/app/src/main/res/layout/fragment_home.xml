@@ -31,5 +31,5 @@
         android:layout_margin="15dp"
         android:textStyle="bold"
         />
-    
+
 </LinearLayout>

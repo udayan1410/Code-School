@@ -8,5 +8,8 @@
     <color name="white">#ffffff</color>
     <color name="gray">#DDDADA</color>
     <color name="darkGray">#686565</color>
+    <color name="darkerGray">#3A3939</color>
     <color name="darkBlue">#256AF4</color>
+    <color name="backdrop">#03000000</color>
+    <color name="transparent">#E8FFFFFF</color>
 </resources>
