@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:id="@+id/loginImage"
+        android:layout_height="200dp"
+        android:src="@drawable/python_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        ></ImageView>
+
+    <EditText
+        android:id="@+id/loginEmail"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginImage"
+        app:layout_constraintWidth_percent="0.8"
+        android:hint="Email Id"
+        android:textSize="25dp"
+        android:gravity="center"
+        ></EditText>
+
+    <EditText
+        android:id="@+id/loginPassword"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textSize="25dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginEmail"
+        app:layout_constraintWidth_percent="0.8"></EditText>
+
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="0dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginPassword"
+        app:layout_constraintWidth_percent="0.6"
+        android:text="Login"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
+        ></Button>
+
+    <TextView
+        android:id="@+id/loginCreate"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginButton"
+        app:layout_constraintWidth_percent="0.8"
+        android:textColor="@color/blackEngine"
+        android:gravity="center"
+        android:textSize="16dp"
+        android:text="Don't have an Account? Create One"
+
+        >
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
