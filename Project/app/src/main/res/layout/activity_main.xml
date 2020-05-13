@@ -25,6 +25,7 @@
         android:theme="@style/BottomNavigationTheme"
         app:menu="@menu/bottom_navigation"
         android:background="@color/colorPrimary"
+        android:elevation="20dp"
         />
 
 </RelativeLayout>

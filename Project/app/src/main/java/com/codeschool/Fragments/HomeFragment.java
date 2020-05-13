@@ -28,21 +28,18 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v  = inflater.inflate(R.layout.fragment_home,container,false);
-
         initialize(v);
-
         return v;
     }
 
     public void initialize(View v){
         enrollCourseModelList.add(new EnrollCourseModel("Java","Info related to Java",R.mipmap.java_image));
         enrollCourseModelList.add(new EnrollCourseModel("Android","Info related to Android",R.drawable.android_image));
-        enrollCourseModelList.add(new EnrollCourseModel("Python","Info related to Python",R.drawable.python_image));
 
         RecyclerView.Adapter adapter=new RecycleEnrollCourseAdapter(getContext(),enrollCourseModelList);
 
         recyclerView = v.findViewById(R.id.enrolledCoursesRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),RecyclerView.HORIZONTAL,false));
         recyclerView.setAdapter(adapter);
     }
 
