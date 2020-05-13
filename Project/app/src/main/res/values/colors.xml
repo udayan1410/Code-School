@@ -6,4 +6,6 @@
     <color name="redEngine">#CB202D</color>
     <color name="blackEngine">#2D2D2D</color>
     <color name="white">#ffffff</color>
+    <color name="gray">#DDDADA</color>
+    <color name="darkGray">#686565</color>
 </resources>
