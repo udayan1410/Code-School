@@ -7,11 +7,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeschool.Models.LoginModel;
@@ -24,6 +26,7 @@ import com.codeschool.Utils.Misc;
 public class LoginActivity extends AppCompatActivity {
 
     EditText loginEmail, loginPassword;
+    TextView signUpTextView;
     Button loginButton;
     Dialog loadingDialog;
     NetworkCient.ServerCommunicator communicator;
@@ -50,6 +53,15 @@ public class LoginActivity extends AppCompatActivity {
                 loginStatusModelCall.enqueue(new LoginCallbackHandler());
             }
         });
+
+        // Setting on click listener on SignUp
+
+        signUpTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this,SignupActivity.class));
+            }
+        });
     }
 
 
@@ -57,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         loginButton = findViewById(R.id.loginButton);
+        signUpTextView = findViewById(R.id.loginCreate);
 
         loadingDialog = Misc.createDialog(LoginActivity.this,R.layout.dialog_progress);
     }

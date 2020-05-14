@@ -9,6 +9,8 @@ import android.widget.Button;
 
 import com.codeschool.project.LoginActivity;
 import com.codeschool.project.R;
+import com.codeschool.project.SignupActivity;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
