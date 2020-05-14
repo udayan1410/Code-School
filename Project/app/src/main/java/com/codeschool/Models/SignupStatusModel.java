@@ -4,9 +4,11 @@ package com.codeschool.Models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import androidx.annotation.NonNull;
+
 public class SignupStatusModel {
 
-    @SerializedName("Status")
+    @SerializedName("status")
     @Expose
     private String status;
     @SerializedName("id")
@@ -29,4 +31,9 @@ public class SignupStatusModel {
         this.id = id;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "status: "+status+" id: "+id;
+    }
 }

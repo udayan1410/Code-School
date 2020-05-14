@@ -3,20 +3,31 @@ package com.codeschool.Utils;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeschool.project.R;
 
+import java.util.zip.Inflater;
+
 public class Misc {
 
-    public static Dialog createDialog(Context context,int layoutFile){
+    public static Dialog createDialog(Context context,int layoutFile,String message){
+
+        View view = LayoutInflater.from(context).inflate(layoutFile,null,false);
+        TextView loadingText = view.findViewById(R.id.loadingText);
+        loadingText.setText(message);
+
         Dialog dialog=new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
-        dialog.setContentView(layoutFile);
+        dialog.setContentView(view);
         dialog.setCancelable(false);
         return dialog;
+
     }
 
     public static void showToast(Context context,String toastMessage){

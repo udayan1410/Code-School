@@ -7,9 +7,9 @@
     tools:context=".SignupActivity">
 
     <ImageView
+        android:id="@+id/signupImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:id="@+id/signupImage"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,7 +46,7 @@
         ></EditText>
 
     <EditText
-        android:id="@+id/loginPassword"
+        android:id="@+id/signupPassword"
         android:layout_width="0dp"
         android:layout_height="80dp"
         android:layout_marginTop="20dp"
@@ -60,13 +60,13 @@
         app:layout_constraintWidth_percent="0.8"></EditText>
 
     <Button
-        android:id="@+id/loginButton"
+        android:id="@+id/signupButton"
         android:layout_width="0dp"
         android:layout_height="70dp"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signupUsername"
+        app:layout_constraintTop_toBottomOf="@id/signupPassword"
         app:layout_constraintWidth_percent="0.6"
         android:text="Signup"
         android:gravity="center"

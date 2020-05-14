@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         signUpTextView = findViewById(R.id.loginCreate);
 
-        loadingDialog = Misc.createDialog(LoginActivity.this,R.layout.dialog_progress);
+        loadingDialog = Misc.createDialog(LoginActivity.this,R.layout.dialog_progress,"Logging in");
     }
 
 
