@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class QuizAnswerModel {
 
+
     @SerializedName("id")
     @Expose
     private String id;

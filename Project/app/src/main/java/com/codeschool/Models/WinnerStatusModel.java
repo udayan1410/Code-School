@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName;
 
 import androidx.annotation.NonNull;
 
-public class QuizAnswerStatusModel {
+public class WinnerStatusModel {
 
     @SerializedName("status")
     @Expose
     private String status;
-    @SerializedName("endOfQuiz")
+    @SerializedName("winnerId")
     @Expose
-    private Boolean endOfQuiz;
+    private String winnerId;
 
     public String getStatus() {
         return status;
@@ -23,18 +23,18 @@ public class QuizAnswerStatusModel {
         this.status = status;
     }
 
-    public Boolean getIsEndOfQuiz() {
-        return endOfQuiz;
+    public String getWinnerId() {
+        return winnerId;
     }
 
-    public void setIsEndOfQuiz(Boolean isEndOfQuiz) {
-        this.endOfQuiz = isEndOfQuiz;
+    public void setWinnerId(String winnerId) {
+        this.winnerId = winnerId;
     }
 
 
     @NonNull
     @Override
     public String toString() {
-        return "status: "+getStatus()+" endofquiz: "+getIsEndOfQuiz();
+            return "status: "+status+" winner: "+winnerId;
     }
 }

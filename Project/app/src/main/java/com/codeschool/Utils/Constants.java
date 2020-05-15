@@ -9,5 +9,6 @@ public class Constants {
 
     //Shared Preferences
     public static final String USERDATA = "userdata";
+    public static final String SESSIONDATA = "sessiondata";
 
 }

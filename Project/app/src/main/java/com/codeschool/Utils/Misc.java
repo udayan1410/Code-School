@@ -10,9 +10,12 @@ import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeschool.Interfaces.CourseSelectedHandler;
 import com.codeschool.project.R;
 
 import java.util.zip.Inflater;
+
+import androidx.cardview.widget.CardView;
 
 public class Misc {
 
@@ -30,6 +33,45 @@ public class Misc {
         return dialog;
 
     }
+
+    public static Dialog createDialog(Context context, CourseSelectedHandler handler){
+        View view = LayoutInflater.from(context).inflate(R.layout.choose_quiz_course,null,false);
+        CardView courseJava = view.findViewById(R.id.courseJava);
+        CardView courseAndroid = view.findViewById(R.id.courseAndroid);
+
+        courseJava.setOnClickListener(new CardClickedHandler(handler));
+        courseAndroid.setOnClickListener(new CardClickedHandler(handler));
+
+        Dialog dialog=new Dialog(context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+        dialog.setContentView(view);
+        dialog.setCancelable(true);
+
+        return dialog;
+    }
+
+
+    private static class CardClickedHandler implements  View.OnClickListener{
+        CourseSelectedHandler handler;
+        CardClickedHandler(CourseSelectedHandler handler){
+            this.handler = handler;
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.courseAndroid:
+                handler.onCourseSelected("android");
+                break;
+
+                case R.id.courseJava:
+                handler.onCourseSelected("java");
+                break;
+            }
+        }
+    }
+
 
     public static void showToast(Context context,String toastMessage){
         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();

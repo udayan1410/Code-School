@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codeschool.Interfaces.CourseSelectedHandler;
 import com.codeschool.Models.FindMatchModel;
 import com.codeschool.Models.FindMatchStatusModel;
 import com.codeschool.Models.LoginStatusModel;
@@ -34,6 +35,8 @@ public class QuizFragment extends Fragment {
     Dialog dialog;
     FindMatchModel findMatchModel;
     int timerCounter = 0;
+    boolean matchFound = false;
+    Dialog courseSelectionDialog;
 
     @Nullable
     @Override
@@ -45,26 +48,31 @@ public class QuizFragment extends Fragment {
         multiplayerQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                courseSelectionDialog = Misc.createDialog(getContext(), course -> {
+                    //Start Timer. If timer more than 20seconds then cancel find
+                    Thread thread = new Thread(new Timer());
+                    thread.start();
 
-                //Start Timer
-                Thread thread = new Thread(new Timer());
-                thread.start();
+                    dialog.show();
 
-                dialog.show();
+                    Gson gson = new Gson();
+                    //Getting the saved json in String format
+                    String loginStatusJson = Misc.getStringFromSharedPref(getContext(), Constants.USERDATA, Constants.USERDATA);
 
-                Gson gson = new Gson();
-                //Getting the saved json in String format
-                String loginStatusJson = Misc.getStringFromSharedPref(getContext(), Constants.USERDATA, Constants.USERDATA);
+                    //Converting String back to json
+                    LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson, LoginStatusModel.class);
 
-                //Converting String back to json
-                LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson, LoginStatusModel.class);
+                    //Getting id from userdata model
+                    findMatchModel = new FindMatchModel(course, loginStatusModel.getUserData().getId());
 
-                //Getting id from userdata model
-                findMatchModel = new FindMatchModel("android", loginStatusModel.getUserData().getId());
+                    communicator = NetworkCient.getClient(Constants.SERVER_URL);
+                    Call<FindMatchStatusModel> call = communicator.findMatch(findMatchModel);
+                    call.enqueue(new FindMatchHandler());
 
-                communicator = NetworkCient.getClient(Constants.SERVER_URL);
-                Call<FindMatchStatusModel> call = communicator.findMatch(findMatchModel);
-                call.enqueue(new FindMatchHandler());
+                    courseSelectionDialog.dismiss();
+                });
+
+                courseSelectionDialog.show();
 
             }
         });
@@ -76,6 +84,16 @@ public class QuizFragment extends Fragment {
     private class FindMatchHandler implements Callback<FindMatchStatusModel> {
         @Override
         public void onResponse(Call<FindMatchStatusModel> call, Response<FindMatchStatusModel> response) {
+
+            FindMatchStatusModel findMatchStatusModel = response.body();
+
+            //Save Session ID to shared Preferences
+            Gson gson = new Gson();
+            Misc.addStringToSharedPref(getContext(),Constants.SESSIONDATA,Constants.SESSIONDATA,gson.toJson(findMatchStatusModel));
+
+            //Setting bit that match found so toast wont be shown
+            matchFound=true;
+
             dialog.dismiss();
             startActivity(new Intent(getActivity(), MultiplayerQuiz.class));
         }
@@ -95,7 +113,8 @@ public class QuizFragment extends Fragment {
                     Thread.sleep(1000);
                     timerCounter += 1;
                 }
-                cancelFindingMatch();
+                if(!matchFound)
+                    cancelFindingMatch();
             } catch (Exception e) {
                 e.printStackTrace();
             }

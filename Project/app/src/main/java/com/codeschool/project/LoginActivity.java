@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             //Parse the data
             LoginStatusModel loginStatusModel = response.body();
 
-            //Checking if status is success
+            //Login status failed
             if (!loginStatusModel.getStatus().equals("Success")) {
                 Misc.showToast(LoginActivity.this, loginStatusModel.getStatus());
             }
