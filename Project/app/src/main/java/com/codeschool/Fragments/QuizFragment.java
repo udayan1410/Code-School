@@ -32,30 +32,35 @@ public class QuizFragment extends Fragment {
     CardView multiplayerQuiz;
     NetworkCient.ServerCommunicator communicator;
     Dialog dialog;
-    boolean foundMatch=false;
+    FindMatchModel findMatchModel;
+    int timerCounter = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v  = inflater.inflate(R.layout.fragment_quiz,container,false);
-        dialog = Misc.createDialog(getContext(),R.layout.dialog_progress,"Finding Match");
+        View v = inflater.inflate(R.layout.fragment_quiz, container, false);
+        dialog = Misc.createDialog(getContext(), R.layout.dialog_progress, "Finding Match");
 
         multiplayerQuiz = v.findViewById(R.id.multiPlayer);
         multiplayerQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                //Start Timer
+                Thread thread = new Thread(new Timer());
+                thread.start();
+
                 dialog.show();
 
                 Gson gson = new Gson();
                 //Getting the saved json in String format
-                String loginStatusJson = Misc.getStringFromSharedPref(getContext(),Constants.USERDATA,Constants.USERDATA);
+                String loginStatusJson = Misc.getStringFromSharedPref(getContext(), Constants.USERDATA, Constants.USERDATA);
 
                 //Converting String back to json
-                LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson,LoginStatusModel.class);
+                LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson, LoginStatusModel.class);
 
                 //Getting id from userdata model
-                FindMatchModel findMatchModel = new FindMatchModel("android",loginStatusModel.getUserData().getId());
+                findMatchModel = new FindMatchModel("android", loginStatusModel.getUserData().getId());
 
                 communicator = NetworkCient.getClient(Constants.SERVER_URL);
                 Call<FindMatchStatusModel> call = communicator.findMatch(findMatchModel);
@@ -68,7 +73,7 @@ public class QuizFragment extends Fragment {
     }
 
 
-    private class FindMatchHandler implements Callback<FindMatchStatusModel>{
+    private class FindMatchHandler implements Callback<FindMatchStatusModel> {
         @Override
         public void onResponse(Call<FindMatchStatusModel> call, Response<FindMatchStatusModel> response) {
             dialog.dismiss();
@@ -79,6 +84,42 @@ public class QuizFragment extends Fragment {
         public void onFailure(Call<FindMatchStatusModel> call, Throwable t) {
 
         }
+    }
+
+    private class Timer implements Runnable {
+        @Override
+        public void run() {
+            try {
+                //Looping till 20 seconds
+                while (timerCounter < 20) {
+                    Thread.sleep(1000);
+                    timerCounter += 1;
+                }
+                cancelFindingMatch();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void cancelFindingMatch() {
+        //Reset the counter
+        timerCounter = 0;
+
+        Call<FindMatchStatusModel> call = communicator.cancelFindMatch(findMatchModel);
+        call.enqueue(new Callback<FindMatchStatusModel>() {
+            @Override
+            public void onResponse(Call<FindMatchStatusModel> call, Response<FindMatchStatusModel> response) {
+                dialog.dismiss();
+                Misc.showToast(getContext(), "No Match Found");
+            }
+
+            @Override
+            public void onFailure(Call<FindMatchStatusModel> call, Throwable t) {
+                dialog.dismiss();
+                Misc.showToast(getContext(), "No Match Found");
+            }
+        });
     }
 
 }

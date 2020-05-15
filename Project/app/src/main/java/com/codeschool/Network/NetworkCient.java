@@ -34,6 +34,11 @@ public class NetworkCient {
         Call<FindMatchStatusModel> findMatch(@Body FindMatchModel model);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @POST("/multiplayer/cancelfind")
+        Call<FindMatchStatusModel> cancelFindMatch(@Body FindMatchModel model);
+
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @POST("/multiplayer/session/{sessionId}")
         Call<FindMatchStatusModel> postAnswer(@Path("sessionId") int sessionId, @Body FindMatchModel model);
 

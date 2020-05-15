@@ -97,7 +97,6 @@ public class LoginActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Misc.addStringToSharedPref(LoginActivity.this,Constants.USERDATA,Constants.USERDATA,gson.toJson(loginStatusModel));
              }
-
         }
 
         //Failed to retrieve data
