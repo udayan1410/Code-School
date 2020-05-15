@@ -30,7 +30,7 @@ public class NetworkCient {
         Call<SignupStatusModel> sendSignupData(@Body SignupModel model);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @POST("/signup")
+        @POST("/multiplayer/find")
         Call<FindMatchStatusModel> findMatch(@Body FindMatchModel model);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})

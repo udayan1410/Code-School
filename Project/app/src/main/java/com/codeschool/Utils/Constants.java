@@ -7,4 +7,7 @@ public class Constants {
     //Server URL
     public static final String SERVER_URL="http://10.0.0.217:8000/";
 
+    //Shared Preferences
+    public static final String USERDATA = "userdata";
+
 }

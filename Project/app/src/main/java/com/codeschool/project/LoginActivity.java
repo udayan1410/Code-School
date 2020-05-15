@@ -21,6 +21,7 @@ import com.codeschool.Models.LoginStatusModel;
 import com.codeschool.Network.NetworkCient;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
+import com.google.gson.Gson;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -79,18 +80,23 @@ public class LoginActivity extends AppCompatActivity {
     private class LoginCallbackHandler implements Callback<LoginStatusModel>{
         @Override
         public void onResponse(Call<LoginStatusModel> call, Response<LoginStatusModel> response) {
+
             //Dismiss dialog box
             loadingDialog.dismiss();
-
             //Parse the data
             LoginStatusModel loginStatusModel = response.body();
 
             //Checking if status is success
-            if (!loginStatusModel.getStatus().equals("Success"))
+            if (!loginStatusModel.getStatus().equals("Success")) {
                 Misc.showToast(LoginActivity.this, loginStatusModel.getStatus());
+            }
 
-             else
-                Misc.showToast(LoginActivity.this, "Login Success");
+             else{
+                 Misc.showToast(LoginActivity.this, "Login Success");
+                //Saving data to shared Prefs
+                Gson gson = new Gson();
+                Misc.addStringToSharedPref(LoginActivity.this,Constants.USERDATA,Constants.USERDATA,gson.toJson(loginStatusModel));
+             }
 
         }
 
