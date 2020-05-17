@@ -88,7 +88,7 @@ public class GameOverActivity extends AppCompatActivity {
             else if(winnerStatusModel.getWinnerId().equalsIgnoreCase(playerId)) {
                 gameText.setText("Congratulations :D");
                 Misc.showToast(GameOverActivity.this, "You Won");
-                Glide.with(GameOverActivity.this).asGif().load(R.drawable.you_win).into(imageView);
+                Glide.with(GameOverActivity.this).asGif().load(R.drawable.youwin).into(imageView);
             }
 
             else{
