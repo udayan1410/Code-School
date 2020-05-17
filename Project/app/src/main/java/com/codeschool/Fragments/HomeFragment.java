@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.codeschool.Adapters.RecycleEnrollCourseAdapter;
 import com.codeschool.Adapters.RecycleFetchTechNewsAdapter;
@@ -35,6 +36,7 @@ public class HomeFragment extends Fragment {
     CoursesEnrolledModel coursesEnrolledModel;
     NetworkCient.ServerCommunicator communicator;
     Dialog dialog;
+    TextView coursesText;
 
     @Nullable
     @Override
@@ -58,6 +60,11 @@ public class HomeFragment extends Fragment {
             coursesEnrolledModel = new CoursesEnrolledModel();
         else
             coursesEnrolledModel = new Gson().fromJson(coursesEnrolledModelString,CoursesEnrolledModel.class);
+
+
+        coursesText = v.findViewById(R.id.coursesText);
+        if(coursesEnrolledModel.getCoursesEnrolled().size()==0)
+            coursesText.setText("Please Enroll For a Course");
 
         RecyclerView.Adapter adapter=new RecycleEnrollCourseAdapter(getContext(),coursesEnrolledModel);
 

@@ -1,9 +1,11 @@
 package com.codeschool.project;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ public class FullViewActivity extends AppCompatActivity {
         topicName = getIntent().getStringExtra("topic");
         subtopicName = getIntent().getStringExtra("subtopic");
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
     }
 
@@ -56,6 +59,12 @@ public class FullViewActivity extends AppCompatActivity {
         //Setting name and infor
         subtopicNameText.setText(subtopicName);
         subtopicInfoText.setText(descriptionModel.getSubtopicInfo());
+    }
+
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        onBackPressed();
+        return super.onOptionsItemSelected(item);
     }
 
 }

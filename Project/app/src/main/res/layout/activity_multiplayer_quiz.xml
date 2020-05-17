@@ -25,7 +25,7 @@
 
             <TextView
                 android:id="@+id/quizQuestion"
-                android:layout_width="380dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
                 android:layout_centerHorizontal="true"
