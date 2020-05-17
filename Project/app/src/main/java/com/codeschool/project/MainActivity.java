@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.codeschool.Fragments.CatalogFragment;
@@ -14,6 +16,11 @@ import com.codeschool.Fragments.HomeFragment;
 import com.codeschool.Fragments.ProfileFragment;
 import com.codeschool.Fragments.QuizFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialize();
+        copyDB();
+
     }
+
 
     //Initializing the views
     public void initialize(){
@@ -32,6 +42,36 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationItems());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer,new HomeFragment(),"Home").commit();
     }
+
+    //Copying the DB to file
+    public void copyDB(){
+            Log.d("dbcopy","in if");
+            try {
+                Context myContext = MainActivity.this;
+                String DB_path = this.getCacheDir().getAbsolutePath();
+                String DB_name = "CodeSchool.sqlite";
+                String outFileName = DB_path + DB_name;
+
+                File f = this.getDatabasePath(outFileName);
+                if (!f.exists()) {
+                    InputStream myInput = myContext.getAssets().open(DB_name);
+                    OutputStream myOutput = new FileOutputStream(outFileName);
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while((length = myInput.read(buffer))>0){
+                        myOutput.write(buffer,0,length);
+                    }
+                    myOutput.flush();
+                    myOutput.close();
+                    myInput.close();
+                    Log.d("dbcopy","dbabsent");
+                }
+                else{
+                    Log.d("dbcopy","dbpresent");
+                }
+            }
+            catch (Exception e){e.printStackTrace();}
+        }
 
     //Button click listener for bottom navigation view
     private class BottomNavigationItems implements BottomNavigationView.OnNavigationItemSelectedListener{

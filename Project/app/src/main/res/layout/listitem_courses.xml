@@ -10,7 +10,8 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        app:cardCornerRadius="8dp">
+        app:cardCornerRadius="5dp"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,12 +52,16 @@
 
 
             <TextView
+                android:id="@+id/startResumeCourse"
+                android:clickable="true"
+                android:foreground="?android:selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:text="Start/Resume Course"
                 android:textColor="@color/blackEngine"
-                android:textSize="20dp" />
+                android:textSize="20dp"
+                />
 
             <View
                 android:layout_width="match_parent"

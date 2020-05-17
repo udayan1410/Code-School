@@ -34,6 +34,7 @@ public class Misc {
 
     }
 
+    //Quiz fragment where we show dialog to choose subject
     public static Dialog createDialog(Context context, CourseSelectedHandler handler){
         View view = LayoutInflater.from(context).inflate(R.layout.choose_quiz_course,null,false);
         CardView courseJava = view.findViewById(R.id.courseJava);
@@ -51,7 +52,7 @@ public class Misc {
         return dialog;
     }
 
-
+    //Card click listener for the dialog. Used for quiz fragment where we show dialog to choose subject
     private static class CardClickedHandler implements  View.OnClickListener{
         CourseSelectedHandler handler;
         CardClickedHandler(CourseSelectedHandler handler){

@@ -1,6 +1,7 @@
 package com.codeschool.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.codeschool.Models.EnrollCourseModel;
+import com.codeschool.Models.CoursesEnrolledModel;
 import com.codeschool.project.R;
-
-import java.util.List;
+import com.codeschool.project.TopicsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecycleEnrollCourseAdapter extends RecyclerView.Adapter<RecycleEnrollCourseAdapter.MyViewHolder>{
 
     Context context;
-    List<EnrollCourseModel> enrollCourseModelList;
+    CoursesEnrolledModel coursesEnrolledModel;
 
-    public RecycleEnrollCourseAdapter(Context context,List<EnrollCourseModel> enrollCourseModelList){
+    public RecycleEnrollCourseAdapter(Context context,CoursesEnrolledModel coursesEnrolledModel){
         this.context = context;
-        this.enrollCourseModelList = enrollCourseModelList;
+        this.coursesEnrolledModel = coursesEnrolledModel;
     }
 
     @NonNull
@@ -37,24 +37,32 @@ public class RecycleEnrollCourseAdapter extends RecyclerView.Adapter<RecycleEnro
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.courseName.setText(enrollCourseModelList.get(position).getCourseName());
-        holder.courseInfo.setText(enrollCourseModelList.get(position).getCourseInfo());
-        Glide.with(context).load(enrollCourseModelList.get(position).getCourseImage()).into(holder.courseImage);
+        holder.courseName.setText(coursesEnrolledModel.getCoursesEnrolled().get(position));
+        holder.courseInfo.setText(coursesEnrolledModel.getCoursesEnrolledInformation().get(position));
+        Glide.with(context).load(coursesEnrolledModel.getCourseImage().get(position)).into(holder.courseImage);
+
+        holder.startResumeCourse.setOnClickListener(v -> {
+            Intent intent = new Intent(context, TopicsActivity.class);
+            intent.putExtra("course",coursesEnrolledModel.getCoursesEnrolled().get(position));
+            context.startActivity(intent);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return enrollCourseModelList.size();
+        return coursesEnrolledModel.getCoursesEnrolled().size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         private TextView courseName;
         private TextView courseInfo;
         private ImageView courseImage;
+        private TextView startResumeCourse;
 
         public MyViewHolder(View itemView){
             super(itemView);
 
+            startResumeCourse = itemView.findViewById(R.id.startResumeCourse);
             courseImage = itemView.findViewById(R.id.courseImage);
             courseInfo = itemView.findViewById(R.id.courseInfo);
             courseName = itemView.findViewById(R.id.courseName);

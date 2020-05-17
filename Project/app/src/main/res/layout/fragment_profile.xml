@@ -12,4 +12,11 @@
         android:layout_height="100dp"
         />
 
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_below="@+id/show"
+        android:id="@+id/image"
+        />
+
 </RelativeLayout>

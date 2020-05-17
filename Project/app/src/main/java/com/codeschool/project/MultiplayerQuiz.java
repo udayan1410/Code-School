@@ -91,7 +91,7 @@ public class MultiplayerQuiz extends AppCompatActivity {
 
         //Initializing a dialog for sending the answer and fetching next question
         fetchingNextQuestionDialog = Misc.createDialog(MultiplayerQuiz.this,R.layout.dialog_progress,"Fetching Next Question");
-        submitAnswerDialog = Misc.createDialog(MultiplayerQuiz.this,R.layout.dialog_progress,"Answer Submitted. Waiting for other player");
+        submitAnswerDialog = Misc.createDialog(MultiplayerQuiz.this,R.layout.dialog_progress,"Waiting for Other Player");
 
     }
 

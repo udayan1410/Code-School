@@ -9,7 +9,9 @@ import com.codeschool.Models.QuizAnswerStatusModel;
 import com.codeschool.Models.QuizQuestionStatusModel;
 import com.codeschool.Models.SignupModel;
 import com.codeschool.Models.SignupStatusModel;
+import com.codeschool.Models.TechNewsModel;
 import com.codeschool.Models.WinnerStatusModel;
+import com.codeschool.Utils.Constants;
 import com.google.gson.JsonObject;
 
 import java.util.concurrent.TimeUnit;
@@ -53,6 +55,10 @@ public class NetworkCient {
 
         @GET("/multiplayer/session/quiz-over/{sessionId}")
         Call<WinnerStatusModel> getWinner(@Path("sessionId") String sessionId);
+
+        @GET(Constants.TECH_NEWS_FILTERED)
+        Call<TechNewsModel> getTechNews();
+
     }
 
     public static ServerCommunicator getClient(String url){
