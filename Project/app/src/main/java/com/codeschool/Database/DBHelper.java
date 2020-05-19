@@ -101,4 +101,27 @@ public class DBHelper {
     }
 
 
+    public Integer totalCompletionPercent(String courseName){
+        String queryTotalCourses = "SELECT * FROM CourseData where coursename='"+courseName+"'";
+        Cursor c = db.rawQuery(queryTotalCourses,null);
+
+        String queryComplete = "SELECT * FROM CourseData where coursename='"+courseName+"' and topiccompleted='1' and subtopiccompleted='1'";
+        Cursor c2 = db.rawQuery(queryComplete,null);
+
+
+        double totalTopicsAvailable = c.getCount();
+        double completedTopics = c2.getCount();
+
+        if(completedTopics==1)
+            return 0;
+
+        double  totalPercent = (completedTopics/totalTopicsAvailable)*100;
+        double roundedPercent = Math.round(totalPercent);
+
+        String percent = roundedPercent+"";
+        percent = percent.substring(0,percent.length()-2);
+        return Integer.parseInt(percent);
+    }
+
+
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codeschool.Interfaces.CourseSelectedHandler;
+import com.codeschool.project.LoginActivity;
 import com.codeschool.project.R;
 
 import java.util.zip.Inflater;
@@ -52,6 +53,8 @@ public class Misc {
         return dialog;
     }
 
+
+
     //Card click listener for the dialog. Used for quiz fragment where we show dialog to choose subject
     private static class CardClickedHandler implements  View.OnClickListener{
         CourseSelectedHandler handler;
@@ -73,6 +76,11 @@ public class Misc {
         }
     }
 
+    //Clearing session Data
+    public static void clearDataFromSP(Context context,String sharedPreferenceName){
+        SharedPreferences preferences = context.getSharedPreferences(sharedPreferenceName,Context.MODE_PRIVATE);
+        preferences.edit().clear().commit();
+    }
 
     public static void showToast(Context context,String toastMessage){
         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();

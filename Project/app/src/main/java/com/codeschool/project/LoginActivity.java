@@ -41,43 +41,48 @@ public class LoginActivity extends AppCompatActivity {
         init();
 
         //Setting on click listener on button
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Opening a dialog box to show loading
-                loadingDialog.show();
+        loginButton.setOnClickListener(v -> {
+                    //Opening a dialog box to show loading
+                    loadingDialog.show();
 
-                //Making a post request to API
-                LoginModel loginModel = new LoginModel(loginEmail.getText().toString(), loginPassword.getText().toString());
-                communicator = NetworkCient.getClient(Constants.SERVER_URL);
-                Call<LoginStatusModel> loginStatusModelCall = communicator.sendLoginData(loginModel);
-                loginStatusModelCall.enqueue(new LoginCallbackHandler());
-            }
-        });
+                    //Making a post request to API
+                    LoginModel loginModel = new LoginModel(loginEmail.getText().toString(), loginPassword.getText().toString());
+                    communicator = NetworkCient.getClient(Constants.SERVER_URL);
+                    Call<LoginStatusModel> loginStatusModelCall = communicator.sendLoginData(loginModel);
+                    loginStatusModelCall.enqueue(new LoginCallbackHandler());
+                }
+        );
 
         // Setting on click listener on SignUp
+        signUpTextView.setOnClickListener(v -> {
+                    startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+                }
+        );
 
-        signUpTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this,SignupActivity.class));
-            }
-        });
+        //Get data from SP
+        String loginStatusJson = Misc.getStringFromSharedPref(this,Constants.USERDATA,Constants.USERDATA);
+        Gson gson = new Gson();
+
+        //User already logged in
+        if(!loginStatusJson.equalsIgnoreCase("Default Value")) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        }
     }
 
 
-    public void init(){
+    public void init() {
         loginEmail = findViewById(R.id.loginEmail);
         loginPassword = findViewById(R.id.loginPassword);
         loginButton = findViewById(R.id.loginButton);
         signUpTextView = findViewById(R.id.loginCreate);
 
-        loadingDialog = Misc.createDialog(LoginActivity.this,R.layout.dialog_progress,"Logging in");
+        loadingDialog = Misc.createDialog(LoginActivity.this, R.layout.dialog_progress, "Logging in");
     }
 
 
     //Handling the callback of the post request
-    private class LoginCallbackHandler implements Callback<LoginStatusModel>{
+    private class LoginCallbackHandler implements Callback<LoginStatusModel> {
         @Override
         public void onResponse(Call<LoginStatusModel> call, Response<LoginStatusModel> response) {
 
@@ -87,23 +92,25 @@ public class LoginActivity extends AppCompatActivity {
             LoginStatusModel loginStatusModel = response.body();
 
             //Login status failed
-            if (!loginStatusModel.getStatus().equals("Success")) {
+            if (!loginStatusModel.getStatus().equals("Success"))
                 Misc.showToast(LoginActivity.this, loginStatusModel.getStatus());
-            }
 
-             else{
-                 Misc.showToast(LoginActivity.this, "Login Success");
+            //Login success
+            else {
+                Misc.showToast(LoginActivity.this, "Login Success");
                 //Saving data to shared Prefs
                 Gson gson = new Gson();
-                Misc.addStringToSharedPref(LoginActivity.this,Constants.USERDATA,Constants.USERDATA,gson.toJson(loginStatusModel));
-             }
+                Misc.addStringToSharedPref(LoginActivity.this, Constants.USERDATA, Constants.USERDATA, gson.toJson(loginStatusModel));
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
         }
 
         //Failed to retrieve data
         @Override
         public void onFailure(Call<LoginStatusModel> call, Throwable t) {
             loadingDialog.dismiss();
-            Misc.showToast(LoginActivity.this,"Failed to Get Data. Check Internet");
+            Misc.showToast(LoginActivity.this, "Failed to Get Data. Check Internet");
         }
     }
 

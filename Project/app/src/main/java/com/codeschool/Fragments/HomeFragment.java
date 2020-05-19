@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     RecyclerView recyclerView,recyclerViewNews;
     CoursesEnrolledModel coursesEnrolledModel;
     NetworkCient.ServerCommunicator communicator;
-    Dialog dialog;
+//    Dialog dialog;
     TextView coursesText;
 
     @Nullable
@@ -51,8 +51,8 @@ public class HomeFragment extends Fragment {
 
     public void initialize(View v){
         //Preparing dialog
-        dialog = Misc.createDialog(getContext(),R.layout.dialog_progress,"Fetching Latest News");
-        dialog.show();
+//        dialog = Misc.createDialog(getContext(),R.layout.dialog_progress,"Fetching Latest News");
+//        dialog.show();
 
         //Get Enrolled courses from shared prefs
         String coursesEnrolledModelString =Misc.getStringFromSharedPref(getContext(),Constants.COURSEENROLLED,Constants.COURSEENROLLED);
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
         call.enqueue(new Callback<TechNewsModel>() {
             @Override
             public void onResponse(Call<TechNewsModel> call, Response<TechNewsModel> response) {
-                dialog.dismiss();
+//                dialog.dismiss();
 
                 //Set data to recycler view
                 TechNewsModel techNewsModel = response.body();
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(Call<TechNewsModel> call, Throwable t) {
-                dialog.dismiss();
+//                dialog.dismiss();
                 Misc.showToast(getContext(),"Couldn't Fetch news right now");
             }
         });

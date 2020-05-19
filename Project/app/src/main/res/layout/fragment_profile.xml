@@ -9,13 +9,22 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/show"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:layout_alignParentBottom="true"
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="Logout"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
             android:layout_centerHorizontal="true"
-            android:text="show"
+            android:layout_alignParentBottom="true"
             android:layout_below="@+id/multiPlayerBadgeContainer"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:foreground="?selectableItemBackground"
+            android:clickable="true"
             />
 
 
@@ -94,6 +103,15 @@
                     android:textColor="@color/darkerGray"
                     android:textSize="20dp" />
 
+                <View
+                    android:id="@+id/courseAndroidProgress"
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_below="@+id/courseAndroid"
+                    android:layout_alignLeft="@+id/courseAndroid"
+                    />
+
                 <TextView
                     android:id="@+id/androidCompletedPercent"
                     android:layout_width="wrap_content"
@@ -104,7 +122,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    android:text="25%"
+                    android:text="0%"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp" />
 
@@ -122,6 +140,14 @@
                     android:textColor="@color/darkerGray"
                     android:textSize="20dp" />
 
+                <View
+                    android:id="@+id/courseJavaProgress"
+                    android:layout_width="0dp"
+                    android:layout_height="3dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_below="@+id/courseJava"
+                    android:layout_alignLeft="@+id/courseJava"
+                    />
 
                 <TextView
                     android:id="@+id/javaCompletedPercent"
@@ -132,8 +158,8 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="25%"
+                    android:layout_marginBottom="10dp"
+                    android:text="0%"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="20dp" />
 

@@ -44,16 +44,12 @@ public class FullViewActivity extends AppCompatActivity {
         db = DBHelper.getInstance(FullViewActivity.this);
         descriptionModel = db.getSubtopicDescription(topicName,subtopicName);
 
-        Log.d("TAG","DEScriptiiong model "+descriptionModel);
 
         if(descriptionModel.getSubtopicImage().equalsIgnoreCase("null.jpg")) {
             subtopicImage.setVisibility(View.GONE);
-            Log.d("TAG","Image null");
         }
         else {
-
             Glide.with(this).load(descriptionModel.getSubtopicImage()).placeholder(R.drawable.loading).into(subtopicImage);
-            Log.d("TAG","Image Loading...");
         }
 
         //Setting name and infor

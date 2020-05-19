@@ -12,13 +12,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".MainActivity" android:configChanges="screenSize|orientation|screenLayout|navigation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" android:configChanges="screenSize|orientation|screenLayout|navigation"></activity>
         <activity android:name=".FullViewActivity"/>
         <activity android:name=".SubtopicsActivity" />
         <activity android:name=".TopicsActivity" />
@@ -26,7 +20,13 @@
         <activity android:name=".GameOverActivity" />
         <activity android:name=".MultiplayerQuiz" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
     </application>
 

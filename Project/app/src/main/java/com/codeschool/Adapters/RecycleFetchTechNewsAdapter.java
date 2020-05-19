@@ -2,6 +2,7 @@ package com.codeschool.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,7 @@ public class RecycleFetchTechNewsAdapter extends RecyclerView.Adapter<RecycleFet
 
         holder.title.setText(articleList.get(position).getTitle());
         holder.description.setText(articleList.get(position).getDescription());
+        holder.description.setMovementMethod(new ScrollingMovementMethod());
         Glide.with(context).load(articleList.get(position).getUrlToImage()).into(holder.newsImage);
 
 
