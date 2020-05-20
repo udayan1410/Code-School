@@ -36,9 +36,11 @@ public class SubtopicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subtopics);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         init();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(topicName);
     }
 
 

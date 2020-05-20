@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codeschool.Models.LoginModel;
 import com.codeschool.Models.LoginStatusModel;
 import com.codeschool.Network.NetworkCient;
@@ -27,6 +29,7 @@ import com.google.gson.Gson;
 public class LoginActivity extends AppCompatActivity {
 
     EditText loginEmail, loginPassword;
+    ImageView loginImage;
     TextView signUpTextView;
     Button loginButton;
     Dialog loadingDialog;
@@ -36,6 +39,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+
+        getSupportActionBar().setTitle("Login");
 
         //Initializing all views
         init();
@@ -76,7 +82,9 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = findViewById(R.id.loginPassword);
         loginButton = findViewById(R.id.loginButton);
         signUpTextView = findViewById(R.id.loginCreate);
+        loginImage = findViewById(R.id.loginImage);
 
+        Glide.with(this).load(R.drawable.python_image).into(loginImage);
         loadingDialog = Misc.createDialog(LoginActivity.this, R.layout.dialog_progress, "Logging in");
     }
 

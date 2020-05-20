@@ -86,8 +86,11 @@ public class ProfileFragment extends Fragment {
         multiPlayerStreakText.setText(loginStatusModel.getUserData().getMultiPlayerStreak());
 
         //Getting percentage completed data from DB
+
         int androidPecent = dbHelper.totalCompletionPercent("Android");
         int javaPecent = dbHelper.totalCompletionPercent("Java");
+
+        Log.d("TAG","Percent = "+androidPecent);
 
         //Completed Text
         animatePercent(androidPecent,androidCompletedPercent,courseAndroidProgress);

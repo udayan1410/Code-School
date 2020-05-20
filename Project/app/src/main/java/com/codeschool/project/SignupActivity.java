@@ -32,6 +32,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        getSupportActionBar().setTitle("Signup");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         init();

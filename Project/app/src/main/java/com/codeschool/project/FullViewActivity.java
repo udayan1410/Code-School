@@ -31,8 +31,8 @@ public class FullViewActivity extends AppCompatActivity {
         topicName = getIntent().getStringExtra("topic");
         subtopicName = getIntent().getStringExtra("subtopic");
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         init();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public void init(){

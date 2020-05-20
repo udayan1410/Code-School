@@ -1,288 +1,288 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        >
 
-        <Button
-            android:id="@+id/logoutButton"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:text="Logout"
-            android:gravity="center"
-            android:textSize="20dp"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/multiPlayerBadgeContainer"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:foreground="?selectableItemBackground"
-            android:clickable="true"
-            />
+            android:layout_height="match_parent"
+            >
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/welcomeCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardElevation="5dp">
-
-            <RelativeLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/welcomeCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:layout_margin="10dp"
+                app:cardElevation="5dp">
 
-                <TextView
-                    android:id="@+id/welcome"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="Welcome"
-                    android:textColor="@color/blackEngine"
-                    android:textSize="25dp" />
+                    android:gravity="center">
 
-                <TextView
-                    android:id="@+id/welcomeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_toRightOf="@+id/welcome"
-                    android:text="Welcome"
-                    android:textColor="@color/darkBlue"
-                    android:textSize="25dp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/welcome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:text="Welcome"
+                        android:textColor="@color/blackEngine"
+                        android:textSize="25dp" />
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/welcomeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_toRightOf="@+id/welcome"
+                        android:text="Welcome"
+                        android:textColor="@color/darkBlue"
+                        android:textSize="25dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/courseCompleteCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/welcomeCard"
-            android:layout_margin="10dp"
-            android:layout_marginTop="20dp"
-            app:cardElevation="5dp">
-
-            <RelativeLayout
+            <androidx.cardview.widget.CardView
+                android:id="@+id/courseCompleteCard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/welcomeCard"
+                android:layout_margin="10dp"
+                android:layout_marginTop="20dp"
+                app:cardElevation="5dp">
 
-                <TextView
-                    android:id="@+id/completedTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="5dp"
-                    android:text="Courses Completed"
-                    android:textColor="@color/darkBlue"
-                    android:textSize="22dp"
-                    android:textStyle="bold" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-
-                <TextView
-                    android:id="@+id/courseAndroid"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/completedTitle"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Android Course Completed:"
-                    android:textColor="@color/darkerGray"
-                    android:textSize="20dp" />
-
-                <View
-                    android:id="@+id/courseAndroidProgress"
-                    android:layout_width="0dp"
-                    android:layout_height="3dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_below="@+id/courseAndroid"
-                    android:layout_alignLeft="@+id/courseAndroid"
-                    />
-
-                <TextView
-                    android:id="@+id/androidCompletedPercent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/courseAndroid"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="0%"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20dp" />
-
-                <TextView
-                    android:id="@+id/courseJava"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/courseAndroid"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Java Course Completed:"
-                    android:textColor="@color/darkerGray"
-                    android:textSize="20dp" />
-
-                <View
-                    android:id="@+id/courseJavaProgress"
-                    android:layout_width="0dp"
-                    android:layout_height="3dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_below="@+id/courseJava"
-                    android:layout_alignLeft="@+id/courseJava"
-                    />
-
-                <TextView
-                    android:id="@+id/javaCompletedPercent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/courseJava"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:text="0%"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20dp" />
-
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/completedTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="Courses Completed"
+                        android:textColor="@color/darkBlue"
+                        android:textSize="22dp"
+                        android:textStyle="bold" />
 
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/multiplayerStreakRecord"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/courseCompleteCard"
-            android:layout_margin="10dp"
-            android:layout_marginTop="20dp"
-            app:cardElevation="5dp">
+                    <TextView
+                        android:id="@+id/courseAndroid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/completedTitle"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Android Course Completed:"
+                        android:textColor="@color/darkerGray"
+                        android:textSize="20dp" />
 
-            <RelativeLayout
+                    <TextView
+                        android:id="@+id/androidCompletedPercent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/courseAndroid"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="0%"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/courseJava"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/courseAndroid"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Java Course Completed:"
+                        android:textColor="@color/darkerGray"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/javaCompletedPercent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/courseJava"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="0%"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20dp" />
+
+                    <View
+                        android:id="@+id/courseJavaProgress"
+                        android:layout_width="0dp"
+                        android:layout_height="3dp"
+                        android:layout_below="@+id/courseJava"
+                        android:layout_alignLeft="@+id/courseJava"
+                        android:background="@color/colorPrimaryDark" />
+
+                    <View
+                        android:id="@+id/courseAndroidProgress"
+                        android:layout_width="0dp"
+                        android:layout_height="3dp"
+                        android:layout_below="@+id/courseAndroid"
+                        android:layout_alignLeft="@+id/courseAndroid"
+                        android:background="@color/colorPrimaryDark" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/multiplayerStreakRecord"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courseCompleteCard"
+                android:layout_margin="10dp"
+                android:layout_marginTop="20dp"
+                app:cardElevation="5dp">
 
-                <TextView
-                    android:id="@+id/streakTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="5dp"
-                    android:text="Streaks"
-                    android:textColor="@color/darkBlue"
-                    android:textSize="22dp"
-                    android:textStyle="bold" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/singlePlayerStreak"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/streakTitle"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Single Player Streak:"
-                    android:textColor="@color/darkerGray"
-                    android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/streakTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="5dp"
+                        android:text="Streaks"
+                        android:textColor="@color/darkBlue"
+                        android:textSize="22dp"
+                        android:textStyle="bold" />
 
-
-                <TextView
-                    android:id="@+id/singlePlayerStreakText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/singlePlayerStreak"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="5"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/singlePlayerStreak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/streakTitle"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Single Player Streak:"
+                        android:textColor="@color/darkerGray"
+                        android:textSize="20dp" />
 
 
-                <TextView
-                    android:id="@+id/multiPlayerStreak"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/singlePlayerStreak"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Multi Player Streak:"
-                    android:textColor="@color/darkerGray"
-                    android:textSize="20dp" />
+                    <TextView
+                        android:id="@+id/singlePlayerStreakText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/singlePlayerStreak"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="5"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20dp" />
 
-                <TextView
-                    android:id="@+id/multiPlayerStreakText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/multiPlayerStreak"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="2"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20dp" />
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/multiPlayerStreak"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/singlePlayerStreak"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="Multi Player Streak:"
+                        android:textColor="@color/darkerGray"
+                        android:textSize="20dp" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/multiPlayerBadgeContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/multiplayerStreakRecord"
-            android:layout_margin="10dp"
-            android:layout_marginTop="20dp"
-            app:cardElevation="5dp">
+                    <TextView
+                        android:id="@+id/multiPlayerStreakText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/multiPlayerStreak"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="2"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="20dp" />
 
-            <RelativeLayout
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/multiPlayerBadgeContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/multiplayerStreakRecord"
+                android:layout_margin="10dp"
+                android:layout_marginTop="20dp"
+                app:cardElevation="5dp">
 
-                <ImageView
-                    android:id="@+id/playerBadge"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:layout_below="@+id/multiPlayerText"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:src="@mipmap/blue_badge" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/multiPlayerText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="Your Multiplayer Badge"
-                    android:textColor="@color/darkBlue"
-                    android:textSize="22dp"
-                    android:textStyle="bold" />
+                    <ImageView
+                        android:id="@+id/playerBadge"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_below="@+id/multiPlayerText"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/blue_badge" />
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
-</ScrollView>
+                    <TextView
+                        android:id="@+id/multiPlayerText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="Your Multiplayer Badge"
+                        android:textColor="@color/darkBlue"
+                        android:textSize="22dp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+    </ScrollView>
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:background="@color/colorPrimary"
+        android:clickable="true"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center"
+        android:text="Logout"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
+</RelativeLayout>

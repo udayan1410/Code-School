@@ -36,9 +36,11 @@ public class TopicsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_topics);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         init();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(courseName);
     }
 
     public void init() {

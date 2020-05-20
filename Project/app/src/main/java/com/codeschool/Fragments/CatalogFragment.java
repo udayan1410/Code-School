@@ -3,6 +3,7 @@ package com.codeschool.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import com.codeschool.Models.CoursesEnrolledModel;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
+import com.codeschool.project.CourseEnrollment;
 import com.codeschool.project.R;
 import com.google.gson.Gson;
 
@@ -45,17 +47,22 @@ public class CatalogFragment extends Fragment {
     private class CourseClickedEnrolledHandler implements  View.OnClickListener{
         @Override
         public void onClick(View v) {
+            Intent intent = new Intent(getContext(), CourseEnrollment.class);
             switch (v.getId()){
                 case R.id.courseJava:
-                    dialog = createDialog("Java","Java Basics and Advanced Course",R.mipmap.java_image);
-                    dialog.show();
+                    intent.putExtra("course","Java");
+//                    dialog = createDialog("Java","Java Basics and Advanced Course",R.mipmap.java_image);
+//                    dialog.show();
                     break;
 
                 case R.id.courseAndroid:
-                    dialog = createDialog("Android","Android from grass root level",R.drawable.android_image);
-                    dialog.show();
+                    intent.putExtra("course","Android");
+//                    dialog = createDialog("Android","Android from grass root level",R.drawable.android_image);
+//                    dialog.show();
                     break;
             }
+
+        startActivity(intent);
         }
     }
 

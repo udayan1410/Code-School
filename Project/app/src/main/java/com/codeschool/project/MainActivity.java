@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationItems());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment(), "Home").commit();
+        getSupportActionBar().setTitle("Home");
     }
 
     //Copying the DB to file
@@ -88,21 +89,25 @@ public class MainActivity extends AppCompatActivity {
                 //If id is home load the home fragment
                 case R.id.nav_home:
                     transaction.replace(R.id.fragmentContainer, new HomeFragment(), "Home");
+                    getSupportActionBar().setTitle("Home");
                     break;
 
                 //If id is catalog load the catalog fragment
                 case R.id.nav_catalog:
                     transaction.replace(R.id.fragmentContainer, new CatalogFragment(), "Catalog");
+                    getSupportActionBar().setTitle("Catalog");
                     break;
 
                 //If id is quiz load the quiz fragment
                 case R.id.nav_quiz:
                     transaction.replace(R.id.fragmentContainer, new QuizFragment(), "Quiz");
+                    getSupportActionBar().setTitle("Quiz");
                     break;
 
                 //If id is profile load the profile fragment
                 case R.id.nav_profile:
                     transaction.replace(R.id.fragmentContainer, new ProfileFragment(), "Profile");
+                    getSupportActionBar().setTitle("Profile");
                     break;
             }
             transaction.commit();

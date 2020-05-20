@@ -11,9 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".MainActivity" android:configChanges="screenSize|orientation|screenLayout|navigation"></activity>
-        <activity android:name=".FullViewActivity"/>
+        <activity android:name=".CourseEnrollment"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="screenSize|orientation|screenLayout|navigation" />
+        <activity android:name=".FullViewActivity" />
         <activity android:name=".SubtopicsActivity" />
         <activity android:name=".TopicsActivity" />
         <activity android:name=".NewsView" />
@@ -27,12 +29,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

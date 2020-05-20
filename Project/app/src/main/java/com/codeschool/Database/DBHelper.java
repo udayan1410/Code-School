@@ -19,7 +19,7 @@ public class DBHelper {
     private static DBHelper dbHelper = null;
 
     public DBHelper(Context context) {
-        db = SQLiteDatabase.openDatabase(context.getCacheDir().getAbsolutePath()+Constants.DBName+".sqlite", null, SQLiteDatabase.OPEN_READWRITE);
+        db = SQLiteDatabase.openDatabase(context.getCacheDir().getAbsolutePath() + Constants.DBName + ".sqlite", null, SQLiteDatabase.OPEN_READWRITE);
     }
 
 
@@ -32,14 +32,14 @@ public class DBHelper {
 
 
     //Getting Topic list from course name
-    public List<TopicModel> getTopicsFromCourse(String coursename){
+    public List<TopicModel> getTopicsFromCourse(String coursename) {
         List<TopicModel> topicModelList = new ArrayList<>();
-        String query="Select * from " + Constants.TABLE_COURSEDATA+" where coursename ='"+coursename+"'";
+        String query = "Select * from " + Constants.TABLE_COURSEDATA + " where coursename ='" + coursename + "'";
         Cursor c = db.rawQuery(query, null);
         List<String> originalTopicList = new ArrayList<>();
         while (c.moveToNext()) {
             String topic = c.getString(c.getColumnIndex("topicname"));
-            if(!originalTopicList.contains(topic)){
+            if (!originalTopicList.contains(topic)) {
                 originalTopicList.add(topic);
 
                 TopicModel model = new TopicModel();
@@ -47,6 +47,8 @@ public class DBHelper {
                 model.setTopicInfo(c.getString(c.getColumnIndex("topicdescription")));
                 model.setTopicCompleted(Integer.parseInt(c.getString(c.getColumnIndex("topiccompleted"))));
                 topicModelList.add(model);
+
+                Log.d("TAG","Topic = "+model);
             }
         }
         return topicModelList;
@@ -54,13 +56,13 @@ public class DBHelper {
 
 
     //Getting SubTopic list from topic name
-    public List<SubtopicModel> getSubTopicFromTopic(String topicname){
+    public List<SubtopicModel> getSubTopicFromTopic(String topicname) {
         List<SubtopicModel> subtopicModelList = new ArrayList<>();
-        
-        String query = "Select * from "+Constants.TABLE_COURSEDATA+" where topicname='"+topicname+"'";
-        Cursor c = db.rawQuery(query,null);
-        
-        while(c.moveToNext()){
+
+        String query = "Select * from " + Constants.TABLE_COURSEDATA + " where topicname='" + topicname + "'";
+        Cursor c = db.rawQuery(query, null);
+
+        while (c.moveToNext()) {
             SubtopicModel subtopicModel = new SubtopicModel();
             subtopicModel.setSubtopicName(c.getString(c.getColumnIndex("subtopicname")));
             subtopicModel.setIsSubtopicCompleted(Integer.parseInt(c.getString(c.getColumnIndex("subtopiccompleted"))));
@@ -71,16 +73,16 @@ public class DBHelper {
     }
 
     //Getting subtopic Information based of topic and subtopicname
-    public SubtopicDescriptionModel getSubtopicDescription(String topicname,String subtopicname){
+    public SubtopicDescriptionModel getSubtopicDescription(String topicname, String subtopicname) {
         SubtopicDescriptionModel model = new SubtopicDescriptionModel();
 
-        String query = "Select * from "+Constants.TABLE_COURSEDATA+" where topicname='"+topicname+"' and subtopicname='"+subtopicname+"'";
+        String query = "Select * from " + Constants.TABLE_COURSEDATA + " where topicname='" + topicname + "' and subtopicname='" + subtopicname + "'";
 
-        Cursor c = db.rawQuery(query,null);
+        Cursor c = db.rawQuery(query, null);
 
-        while(c.moveToNext()){
+        while (c.moveToNext()) {
             model.setSubtopicName(subtopicname);
-            model.setSubtopicImage(c.getString(c.getColumnIndex("subtopicimage"))+".jpg");
+            model.setSubtopicImage(c.getString(c.getColumnIndex("subtopicimage")) + ".jpg");
             model.setSubtopicInfo(c.getString(c.getColumnIndex("subtopicinformation")));
         }
 
@@ -88,38 +90,38 @@ public class DBHelper {
     }
 
     //Updating that the topic is completed viewing
-    public void updateTopicComplete(String topicName){
-        String query = "Update "+Constants.TABLE_COURSEDATA+" set topiccompleted='1' where topicname='"+topicName+"'";
+    public void updateTopicComplete(String topicName) {
+        String query = "Update " + Constants.TABLE_COURSEDATA + " set topiccompleted='1' where topicname='" + topicName + "'";
         db.execSQL(query);
     }
 
 
     //Updating that the subtopic is completed viewing
-    public void updateSubTopicComplete(String subtopicName){
-        String query = "Update "+Constants.TABLE_COURSEDATA+" set subtopiccompleted='1' where subtopicname='"+subtopicName+"'";
+    public void updateSubTopicComplete(String subtopicName) {
+        String query = "Update " + Constants.TABLE_COURSEDATA + " set subtopiccompleted='1' where subtopicname='" + subtopicName + "'";
         db.execSQL(query);
     }
 
 
-    public Integer totalCompletionPercent(String courseName){
-        String queryTotalCourses = "SELECT * FROM CourseData where coursename='"+courseName+"'";
-        Cursor c = db.rawQuery(queryTotalCourses,null);
+    public Integer totalCompletionPercent(String courseName) {
+        String queryTotalCourses = "SELECT * FROM CourseData where coursename='" + courseName + "'";
+        Cursor c = db.rawQuery(queryTotalCourses, null);
 
-        String queryComplete = "SELECT * FROM CourseData where coursename='"+courseName+"' and topiccompleted='1' and subtopiccompleted='1'";
-        Cursor c2 = db.rawQuery(queryComplete,null);
-
+        String queryComplete = "SELECT * FROM CourseData where coursename='" + courseName + "' and topiccompleted='1' and subtopiccompleted='1'";
+        Cursor c2 = db.rawQuery(queryComplete, null);
 
         double totalTopicsAvailable = c.getCount();
         double completedTopics = c2.getCount();
 
-        if(completedTopics==1)
+        //Return 0 initially as we havent started the actual course
+        if ((int) completedTopics <= 1)
             return 0;
 
-        double  totalPercent = (completedTopics/totalTopicsAvailable)*100;
-        double roundedPercent = Math.round(totalPercent);
+        double totalPercent = (completedTopics / totalTopicsAvailable) * 100;
+        double roundedPercent = Math.round(Math.ceil(totalPercent));
 
-        String percent = roundedPercent+"";
-        percent = percent.substring(0,percent.length()-2);
+        String percent = roundedPercent + "";
+        percent = percent.substring(0, percent.length() - 2);
         return Integer.parseInt(percent);
     }
 
