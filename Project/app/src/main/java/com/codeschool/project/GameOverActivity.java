@@ -19,18 +19,23 @@ import com.codeschool.Models.LoginModel;
 import com.codeschool.Models.LoginStatusModel;
 import com.codeschool.Models.WinnerStatusModel;
 import com.codeschool.Network.NetworkCient;
+import com.codeschool.Network.WebSocket;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
+
+import org.json.JSONObject;
 
 public class GameOverActivity extends AppCompatActivity {
 
-    String sessionId,playerId;
+    String sessionId, playerId;
     NetworkCient.ServerCommunicator communicator;
     Dialog dialog;
     ImageView imageView;
     TextView gameText;
     CardView gameDone;
+    Socket mSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
 
-    public void init(){
+    public void init() {
         imageView = findViewById(R.id.imageView);
         gameText = findViewById(R.id.gameOverText);
         gameDone = findViewById(R.id.gameDone);
@@ -61,17 +66,33 @@ public class GameOverActivity extends AppCompatActivity {
         playerId = loginStatusModel.getUserData().getId();
 
         //Loading dialog for fetching
-        dialog = Misc.createDialog(GameOverActivity.this,R.layout.dialog_progress,"Fetching Result");
+        dialog = Misc.createDialog(GameOverActivity.this, R.layout.dialog_progress, "Fetching Result");
+
+        //Getting the socket
+        mSocket = WebSocket.getSocket();
     }
 
-    public void fetchWinner(){
+    public void fetchWinner() {
         dialog.show();
-        communicator = NetworkCient.getClient(Constants.SERVER_URL);
-        Call<WinnerStatusModel> call = communicator.getWinner(sessionId);
-        call.enqueue(new WinnerHandler());
+
+
+        try {
+            //Sending the match over signal to get back the winner id
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("sessionid", sessionId);
+
+            mSocket.emit("MatchOver", jsonObject.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        communicator = NetworkCient.getClient(Constants.SERVER_URL);
+//        Call<WinnerStatusModel> call = communicator.getWinner(sessionId);
+//        call.enqueue(new WinnerHandler());
     }
 
-    private class WinnerHandler implements Callback<WinnerStatusModel>{
+    private class WinnerHandler implements Callback<WinnerStatusModel> {
         @Override
         public void onResponse(Call<WinnerStatusModel> call, Response<WinnerStatusModel> response) {
             dialog.dismiss();
@@ -79,21 +100,17 @@ public class GameOverActivity extends AppCompatActivity {
             WinnerStatusModel winnerStatusModel = response.body();
 
 
-            if(winnerStatusModel.getWinnerId() == null){
-                Misc.showToast(GameOverActivity.this,"Its a Tie");
+            if (winnerStatusModel.getWinnerId() == null) {
+                Misc.showToast(GameOverActivity.this, "Its a Tie");
                 gameText.setText("TIE :|");
                 Glide.with(GameOverActivity.this).asGif().load(R.drawable.itsatie).into(imageView);
-            }
-
-            else if(winnerStatusModel.getWinnerId().equalsIgnoreCase(playerId)) {
+            } else if (winnerStatusModel.getWinnerId().equalsIgnoreCase(playerId)) {
                 gameText.setText("Congratulations :D");
                 Misc.showToast(GameOverActivity.this, "You Won");
                 Glide.with(GameOverActivity.this).asGif().load(R.drawable.youwin).into(imageView);
-            }
-
-            else{
+            } else {
                 gameText.setText("You Lose :(");
-                Misc.showToast(GameOverActivity.this,"You Lose");
+                Misc.showToast(GameOverActivity.this, "You Lose");
                 Glide.with(GameOverActivity.this).asGif().load(R.drawable.you_lose).into(imageView);
             }
         }
@@ -101,36 +118,36 @@ public class GameOverActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call<WinnerStatusModel> call, Throwable t) {
             dialog.dismiss();
-            Misc.showToast(GameOverActivity.this,"Something Went Wrong : Game Over");
+            Misc.showToast(GameOverActivity.this, "Something Went Wrong : Game Over");
         }
     }
 
-    private class GameDoneHandler implements View.OnClickListener{
+    private class GameDoneHandler implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             //Show Dialog as we are fetching new streak data
-            dialog = Misc.createDialog(GameOverActivity.this,R.layout.dialog_progress,"Wrapping Up!");
+            dialog = Misc.createDialog(GameOverActivity.this, R.layout.dialog_progress, "Wrapping Up!");
             dialog.show();
 
             Gson gson = new Gson();
-            String loginStatusModelJSon = Misc.getStringFromSharedPref(GameOverActivity.this,Constants.USERDATA,Constants.USERDATA);
-            LoginStatusModel statusModel = gson.fromJson(loginStatusModelJSon,LoginStatusModel.class);
+            String loginStatusModelJSon = Misc.getStringFromSharedPref(GameOverActivity.this, Constants.USERDATA, Constants.USERDATA);
+            LoginStatusModel statusModel = gson.fromJson(loginStatusModelJSon, LoginStatusModel.class);
 
-            LoginModel loginModel = new LoginModel(statusModel.getUserData().getEmail(),statusModel.getUserData().getPassword());
+            LoginModel loginModel = new LoginModel(statusModel.getUserData().getEmail(), statusModel.getUserData().getPassword());
             Call<LoginStatusModel> call = communicator.sendLoginData(loginModel);
             call.enqueue(new LoginSuccess());
 
         }
     }
 
-    private class LoginSuccess implements Callback<LoginStatusModel>{
+    private class LoginSuccess implements Callback<LoginStatusModel> {
         @Override
         public void onResponse(Call<LoginStatusModel> call, Response<LoginStatusModel> response) {
 
             //Saving new data to Shared pref as we need to update multiplayer score
             LoginStatusModel loginStatusModel = response.body();
             Gson gson = new Gson();
-            Misc.addStringToSharedPref(GameOverActivity.this,Constants.USERDATA,Constants.USERDATA,gson.toJson(loginStatusModel));
+            Misc.addStringToSharedPref(GameOverActivity.this, Constants.USERDATA, Constants.USERDATA, gson.toJson(loginStatusModel));
 
             dialog.dismiss();
             finish();

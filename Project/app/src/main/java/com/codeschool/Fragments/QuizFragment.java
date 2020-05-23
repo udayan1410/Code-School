@@ -64,24 +64,29 @@ public class QuizFragment extends Fragment {
                     Thread thread = new Thread(new Timer());
                     thread.start();
 
-                    //Showing loading dialog
-                    dialog.show();
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Showing loading dialog
+                            dialog.show();
 
-                    Gson gson = new Gson();
-                    //Getting the saved json in String format
-                    String loginStatusJson = Misc.getStringFromSharedPref(getContext(), Constants.USERDATA, Constants.USERDATA);
+                            Gson gson = new Gson();
+                            //Getting the saved json in String format
+                            String loginStatusJson = Misc.getStringFromSharedPref(getContext(), Constants.USERDATA, Constants.USERDATA);
 
-                    //Converting String back to json
-                    LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson, LoginStatusModel.class);
+                            //Converting String back to json
+                            LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson, LoginStatusModel.class);
 
-                    //Getting id from userdata model
-                    findMatchModel = new FindMatchModel(course, loginStatusModel.getUserData().getId(), loginStatusModel.getUserData().getUsername());
+                            //Getting id from userdata model
+                            findMatchModel = new FindMatchModel(course, loginStatusModel.getUserData().getId(), loginStatusModel.getUserData().getUsername());
 
-                    //Sending signal to find match
-                    String gsonString = gson.toJson(findMatchModel);
-                    mSocket.emit("findMatch", gsonString);
+                            //Sending signal to find match
+                            String gsonString = gson.toJson(findMatchModel);
+                            mSocket.emit("findMatch", gsonString);
 
-                    courseSelectionDialog.dismiss();
+                            courseSelectionDialog.dismiss();
+                        }
+                    });
                 });
 
                 courseSelectionDialog.show();
@@ -108,34 +113,34 @@ public class QuizFragment extends Fragment {
     private class FindMatchSuccessHandler implements Emitter.Listener {
         @Override
         public void call(Object... args) {
+            if(getActivity()!=null) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            //Setting bit that match found so toast wont be shown
+                            matchFound = true;
+                            //Getting json data
+                            JSONObject findMatchStatusObject = (JSONObject) args[0];
 
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        //Setting bit that match found so toast wont be shown
-                        matchFound = true;
-                        //Getting json data
-                        JSONObject findMatchStatusObject = (JSONObject) args[0];
+                            //Making model
+                            FindMatchStatusModel findMatchStatusModel = new FindMatchStatusModel(findMatchStatusObject.getString("status"), findMatchStatusObject.getString("sessionID"));
 
-                        //Making model
-                        FindMatchStatusModel findMatchStatusModel = new FindMatchStatusModel(findMatchStatusObject.getString("status"), findMatchStatusObject.getString("sessionID"));
+                            //Save Session ID to shared Preferences
+                            Gson gson = new Gson();
+                            Misc.addStringToSharedPref(getContext(), Constants.SESSIONDATA, Constants.SESSIONDATA, gson.toJson(findMatchStatusModel));
 
-                        //Save Session ID to shared Preferences
-                        Gson gson = new Gson();
-                        Misc.addStringToSharedPref(getContext(), Constants.SESSIONDATA, Constants.SESSIONDATA, gson.toJson(findMatchStatusModel));
+                            //Dismissing dialog and launching next activity
+                            dialog.dismiss();
+                            startActivity(new Intent(getActivity(), MultiplayerQuiz.class));
 
-                        //Dismissing dialog and launching next activity
-                        dialog.dismiss();
-                        startActivity(new Intent(getActivity(), MultiplayerQuiz.class));
-
-                    } catch (
-                            Exception e) {
-                        e.printStackTrace();
+                        } catch (
+                                Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
-
+                });
+            }
         }
     }
 
