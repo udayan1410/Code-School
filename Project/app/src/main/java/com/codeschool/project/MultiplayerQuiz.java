@@ -15,35 +15,43 @@ import android.widget.TextView;
 
 import com.codeschool.Models.FindMatchStatusModel;
 import com.codeschool.Models.LoginStatusModel;
+import com.codeschool.Models.PlayerDatum;
 import com.codeschool.Models.Playerstatus;
 import com.codeschool.Models.QuizAnswerModel;
 import com.codeschool.Models.QuizAnswerStatusModel;
 import com.codeschool.Models.QuizQuestionStatusModel;
 import com.codeschool.Network.NetworkCient;
+import com.codeschool.Network.WebSocket;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.List;
 
 public class MultiplayerQuiz extends AppCompatActivity {
 
-    CardView option1, option2, option3, option4, submitButton,currentlySelectedCard = null;
-    TextView optionText1, optionText2, optionText3, optionText4,questionText, yourScoreText, enemyScoreText,currentlySelectedText = null;
+    CardView option1, option2, option3, option4, submitButton, currentlySelectedCard = null;
+    TextView optionText1, optionText2, optionText3, optionText4, questionText, yourScoreText, enemyScoreText, currentlySelectedText = null, yourName, enemyName;
     NetworkCient.ServerCommunicator communicator;
     String sessionId, playerId;
-    Dialog fetchingNextQuestionDialog,submitAnswerDialog;
+    Dialog fetchingNextQuestionDialog, submitAnswerDialog;
+
+    Socket mSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multiplayer_quiz);
 
-
         init();
-        fetchQuestion();
+        //Showing dialog as initially we will need to fetch the question as we enter the activity
+        fetchingNextQuestionDialog.show();
     }
 
     public void init() {
@@ -70,6 +78,12 @@ public class MultiplayerQuiz extends AppCompatActivity {
         questionText = findViewById(R.id.quizQuestion);
         yourScoreText = findViewById(R.id.yourScore);
         enemyScoreText = findViewById(R.id.enemyScore);
+        yourName = findViewById(R.id.yourName);
+        enemyName = findViewById(R.id.enemyName);
+
+        mSocket = WebSocket.getSocket();
+        mSocket.on("GetQuestionEvent", new QuestionGetter());
+        mSocket.on("GameOver",new GameOverHandler());
 
         Gson gson = new Gson();
         //Getting player ID in json format
@@ -90,17 +104,20 @@ public class MultiplayerQuiz extends AppCompatActivity {
         communicator = NetworkCient.getClient(Constants.SERVER_URL);
 
         //Initializing a dialog for sending the answer and fetching next question
-        fetchingNextQuestionDialog = Misc.createDialog(MultiplayerQuiz.this,R.layout.dialog_progress,"Fetching Next Question");
-        submitAnswerDialog = Misc.createDialog(MultiplayerQuiz.this,R.layout.dialog_progress,"Waiting for Other Player");
+        fetchingNextQuestionDialog = Misc.createDialog(MultiplayerQuiz.this, R.layout.dialog_progress, "Fetching Next Question");
+        submitAnswerDialog = Misc.createDialog(MultiplayerQuiz.this, R.layout.dialog_progress, "Waiting for Other Player");
 
     }
 
+/*
     public void fetchQuestion() {
-        fetchingNextQuestionDialog.show();
-        Call<QuizQuestionStatusModel> call = communicator.getQuestionData(sessionId);
-        call.enqueue(new QuestionGetterHandler());
-    }
 
+//        Call<QuizQuestionStatusModel> call = communicator.getQuestionData(sessionId);
+//        call.enqueue(new QuestionGetterHandler());
+    }
+*/
+
+/*
 
     private class QuestionGetterHandler implements Callback<QuizQuestionStatusModel> {
 
@@ -147,6 +164,7 @@ public class MultiplayerQuiz extends AppCompatActivity {
             Log.d("TAG", "Error " + t.getMessage());
         }
     }
+*/
 
 
     private class OptionClickHandler implements View.OnClickListener {
@@ -200,36 +218,33 @@ public class MultiplayerQuiz extends AppCompatActivity {
 
                     String playerid = playerId;
                     String answer = currentlySelectedText.getText().toString();
-                    //Setting up the model with player's answer and
-                    QuizAnswerModel quizAnswerModel = new QuizAnswerModel();
-                    quizAnswerModel.setAnswer(answer);
-                    quizAnswerModel.setId(playerid);
+
+                    //Setting up the model with player's answer, playerid and sessionid
+                    QuizAnswerModel quizAnswerModel = new QuizAnswerModel(playerid, answer, sessionId);
+                    Gson gson = new Gson();
 
                     //Sending data to backend
-                    Call<QuizAnswerStatusModel> call = communicator.postAnswer(sessionId,quizAnswerModel);
-                    call.enqueue(new AnswerPostedHandler());
-
+                    mSocket.emit("submitAnswer", gson.toJson(quizAnswerModel));
                     break;
             }
 
-            if(submitButton.isClickable())
+            if (submitButton.isClickable())
                 submitButton.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         }
 
     }
 
-
-    private class AnswerPostedHandler implements Callback<QuizAnswerStatusModel>{
+    /*
+    private class AnswerPostedHandler implements Callback<QuizAnswerStatusModel> {
         @Override
         public void onResponse(Call<QuizAnswerStatusModel> call, Response<QuizAnswerStatusModel> response) {
             QuizAnswerStatusModel quizAnswerStatusModel = response.body();
             submitAnswerDialog.dismiss();
             //Quiz is not ended
-            if(!quizAnswerStatusModel.getIsEndOfQuiz()){
-                fetchQuestion();
-            }
-            else{
-                startActivity(new Intent(MultiplayerQuiz.this,GameOverActivity.class));
+            if (!quizAnswerStatusModel.getIsEndOfQuiz()) {
+
+            } else {
+                startActivity(new Intent(MultiplayerQuiz.this, GameOverActivity.class));
                 finish();
             }
 
@@ -237,7 +252,73 @@ public class MultiplayerQuiz extends AppCompatActivity {
 
         @Override
         public void onFailure(Call<QuizAnswerStatusModel> call, Throwable t) {
-            Log.d("TAG","Error "+t.getMessage());
+            Log.d("TAG", "Error " + t.getMessage());
+        }
+    }
+*/
+
+    private class QuestionGetter implements Emitter.Listener {
+
+        public void setQuestionText(TextView questionText, String question) {
+            runOnUiThread(() -> questionText.setText(question));
+        }
+
+        @Override
+        public void call(Object... args) {
+            if (submitAnswerDialog.isShowing())
+                submitAnswerDialog.dismiss();
+
+            JSONObject jsonObject = (JSONObject) args[0];
+            String jsonObjectString = jsonObject.toString();
+
+            Gson gson = new Gson();
+            QuizQuestionStatusModel quizQuestionStatusModel = gson.fromJson(jsonObjectString, QuizQuestionStatusModel.class);
+
+            String question = quizQuestionStatusModel.getQuestion().getQuestion();
+            String option1 = quizQuestionStatusModel.getQuestion().getOptions().get(0);
+            String option2 = quizQuestionStatusModel.getQuestion().getOptions().get(1);
+            String option3 = quizQuestionStatusModel.getQuestion().getOptions().get(2);
+            String option4 = quizQuestionStatusModel.getQuestion().getOptions().get(3);
+
+            Integer your_score = 0;
+            Integer enemy_score = 0;
+            String your_name = "";
+            String enemy_name = "";
+
+            //Parsing the player score to get your and enemy score
+            List<PlayerDatum> playerData = quizQuestionStatusModel.getPlayerData();
+            for (PlayerDatum datum : playerData) {
+                if (datum.getPlayerid().equalsIgnoreCase(playerId)) {
+                    your_score = datum.getPlayerScore();
+                    your_name = datum.getUserName();
+                }
+                else {
+                    enemy_score = datum.getPlayerScore();
+                    enemy_name = datum.getUserName();
+                }
+            }
+
+            //Setting the String text to the textviews
+            setQuestionText(questionText, question);
+            setQuestionText(optionText1, option1);
+            setQuestionText(optionText2, option2);
+            setQuestionText(optionText3, option3);
+            setQuestionText(optionText4, option4);
+            setQuestionText(yourScoreText, String.valueOf(your_score));
+            setQuestionText(enemyScoreText, String.valueOf(enemy_score));
+            setQuestionText(yourName,your_name);
+            setQuestionText(enemyName,enemy_name);
+
+            //Dismissing the dialog as we have fetched question
+            fetchingNextQuestionDialog.dismiss();
+        }
+    }
+
+    private class GameOverHandler implements  Emitter.Listener{
+        @Override
+        public void call(Object... args) {
+            startActivity(new Intent(MultiplayerQuiz.this,GameOverActivity.class));
+            finish();
         }
     }
 

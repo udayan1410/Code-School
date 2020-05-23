@@ -14,6 +14,24 @@ public class QuizAnswerModel {
     @Expose
     private String answer;
 
+    @SerializedName("sessionid")
+    @Expose
+    private String sessionid;
+
+    public QuizAnswerModel(String id, String answer, String sessionid) {
+        this.id = id;
+        this.answer = answer;
+        this.sessionid = sessionid;
+    }
+
+    public String getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
+    }
+
     public String getId() {
         return id;
     }

@@ -13,6 +13,11 @@ public class FindMatchStatusModel {
     @Expose
     private String sessionId;
 
+    public FindMatchStatusModel(String status, String sessionId) {
+        this.status = status;
+        this.sessionId = sessionId;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -29,4 +34,11 @@ public class FindMatchStatusModel {
         this.sessionId = sessionId;
     }
 
+    @Override
+    public String toString() {
+        return "FindMatchStatusModel{" +
+                "status='" + status + '\'' +
+                ", sessionId='" + sessionId + '\'' +
+                '}';
+    }
 }

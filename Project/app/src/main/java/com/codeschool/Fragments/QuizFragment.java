@@ -13,11 +13,18 @@ import com.codeschool.Models.FindMatchModel;
 import com.codeschool.Models.FindMatchStatusModel;
 import com.codeschool.Models.LoginStatusModel;
 import com.codeschool.Network.NetworkCient;
+import com.codeschool.Network.WebSocket;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
 import com.codeschool.project.MultiplayerQuiz;
 import com.codeschool.project.R;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,12 +44,16 @@ public class QuizFragment extends Fragment {
     int timerCounter = 0;
     boolean matchFound = false;
     Dialog courseSelectionDialog;
+    Socket mSocket;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_quiz, container, false);
         dialog = Misc.createDialog(getContext(), R.layout.dialog_progress, "Finding Match");
+
+        connectToServer();
 
         multiplayerQuiz = v.findViewById(R.id.multiPlayer);
         multiplayerQuiz.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +64,7 @@ public class QuizFragment extends Fragment {
                     Thread thread = new Thread(new Timer());
                     thread.start();
 
+                    //Showing loading dialog
                     dialog.show();
 
                     Gson gson = new Gson();
@@ -63,11 +75,11 @@ public class QuizFragment extends Fragment {
                     LoginStatusModel loginStatusModel = gson.fromJson(loginStatusJson, LoginStatusModel.class);
 
                     //Getting id from userdata model
-                    findMatchModel = new FindMatchModel(course, loginStatusModel.getUserData().getId());
+                    findMatchModel = new FindMatchModel(course, loginStatusModel.getUserData().getId(), loginStatusModel.getUserData().getUsername());
 
-                    communicator = NetworkCient.getClient(Constants.SERVER_URL);
-                    Call<FindMatchStatusModel> call = communicator.findMatch(findMatchModel);
-                    call.enqueue(new FindMatchHandler());
+                    //Sending signal to find match
+                    String gsonString = gson.toJson(findMatchModel);
+                    mSocket.emit("findMatch", gsonString);
 
                     courseSelectionDialog.dismiss();
                 });
@@ -80,6 +92,52 @@ public class QuizFragment extends Fragment {
         return v;
     }
 
+    public void connectToServer() {
+        try {
+            mSocket = IO.socket(Constants.REALTIME_SERVER_URL);
+            mSocket.connect();
+            //Setting the socket object to be used later
+            WebSocket.setSocket(mSocket);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mSocket.on("findSuccess", new FindMatchSuccessHandler());
+    }
+
+    private class FindMatchSuccessHandler implements Emitter.Listener {
+        @Override
+        public void call(Object... args) {
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        //Setting bit that match found so toast wont be shown
+                        matchFound = true;
+                        //Getting json data
+                        JSONObject findMatchStatusObject = (JSONObject) args[0];
+
+                        //Making model
+                        FindMatchStatusModel findMatchStatusModel = new FindMatchStatusModel(findMatchStatusObject.getString("status"), findMatchStatusObject.getString("sessionID"));
+
+                        //Save Session ID to shared Preferences
+                        Gson gson = new Gson();
+                        Misc.addStringToSharedPref(getContext(), Constants.SESSIONDATA, Constants.SESSIONDATA, gson.toJson(findMatchStatusModel));
+
+                        //Dismissing dialog and launching next activity
+                        dialog.dismiss();
+                        startActivity(new Intent(getActivity(), MultiplayerQuiz.class));
+
+                    } catch (
+                            Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+        }
+    }
 
     private class FindMatchHandler implements Callback<FindMatchStatusModel> {
         @Override
@@ -89,10 +147,10 @@ public class QuizFragment extends Fragment {
 
             //Save Session ID to shared Preferences
             Gson gson = new Gson();
-            Misc.addStringToSharedPref(getContext(),Constants.SESSIONDATA,Constants.SESSIONDATA,gson.toJson(findMatchStatusModel));
+            Misc.addStringToSharedPref(getContext(), Constants.SESSIONDATA, Constants.SESSIONDATA, gson.toJson(findMatchStatusModel));
 
             //Setting bit that match found so toast wont be shown
-            matchFound=true;
+            matchFound = true;
 
             dialog.dismiss();
             startActivity(new Intent(getActivity(), MultiplayerQuiz.class));
@@ -113,32 +171,27 @@ public class QuizFragment extends Fragment {
                     Thread.sleep(1000);
                     timerCounter += 1;
                 }
-                if(!matchFound)
+                if (!matchFound)
                     cancelFindingMatch();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
     }
 
     public void cancelFindingMatch() {
         //Reset the counter
         timerCounter = 0;
+        Gson gson = new Gson();
 
-        Call<FindMatchStatusModel> call = communicator.cancelFindMatch(findMatchModel);
-        call.enqueue(new Callback<FindMatchStatusModel>() {
-            @Override
-            public void onResponse(Call<FindMatchStatusModel> call, Response<FindMatchStatusModel> response) {
-                dialog.dismiss();
-                Misc.showToast(getContext(), "No Match Found");
-            }
-
-            @Override
-            public void onFailure(Call<FindMatchStatusModel> call, Throwable t) {
-                dialog.dismiss();
-                Misc.showToast(getContext(), "No Match Found");
-            }
+        //Send cancel find request
+        mSocket.emit("cancelFind", gson.toJson(findMatchModel));
+        getActivity().runOnUiThread(() -> {
+            Misc.showToast(getContext(), "No match Found Try again later");
+            dialog.dismiss();
         });
+
     }
 
 }

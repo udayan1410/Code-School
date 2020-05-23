@@ -8,6 +8,9 @@ public class Constants {
     //Server URL
     public static final String SERVER_URL="http://10.0.0.217:8000/";
 
+    //Realtime
+    public static final String REALTIME_SERVER_URL="http://10.0.0.217:3000/multiplayer/find";
+
     //Shared Preferences
     public static final String USERDATA = "userdata";
     public static final String SESSIONDATA = "sessiondata";

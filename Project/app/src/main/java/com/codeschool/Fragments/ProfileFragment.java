@@ -1,5 +1,10 @@
 package com.codeschool.Fragments;
 
+import android.app.Notification;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -15,9 +20,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codeschool.Database.DBHelper;
 import com.codeschool.Models.LoginStatusModel;
+import com.codeschool.Models.NotificationService;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
 import com.codeschool.project.LoginActivity;
+import com.codeschool.project.NotificationMaker;
 import com.codeschool.project.R;
 import com.codeschool.project.SignupActivity;
 import com.google.gson.Gson;
@@ -27,17 +34,21 @@ import org.w3c.dom.Text;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.UiThread;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 
 public class ProfileFragment extends Fragment {
 
-    TextView welcomeText, multiPlayerStreakText, singlePlayerStreakText, androidCompletedPercent,javaCompletedPercent;
+    TextView welcomeText, multiPlayerStreakText, singlePlayerStreakText, androidCompletedPercent, javaCompletedPercent;
     Gson gson;
     DBHelper dbHelper;
     Handler mHandler;
-    View courseAndroidProgress,courseJavaProgress;
+    View courseAndroidProgress, courseJavaProgress;
     public static final int TOTAL_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
     int androidCourseCompletedMaxWidth;
+    NotificationManagerCompat notificationManagerCompat;
+    Notification notification;
 
     @Nullable
     @Override
@@ -47,11 +58,38 @@ public class ProfileFragment extends Fragment {
 
 
         Button logoutButton = v.findViewById(R.id.logoutButton);
-        logoutButton.setOnClickListener(view-> {
-                Misc.clearDataFromSP(getContext(),Constants.USERDATA);
-                startActivity(new Intent(getContext(),LoginActivity.class));
-                getActivity().finish();
-            }
+        logoutButton.setOnClickListener(view -> {
+                    Misc.clearDataFromSP(getContext(), Constants.USERDATA);
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+
+                    //Start service to show notification after a few hours
+                    ComponentName componentName = new ComponentName(getContext(), NotificationService.class);
+                    JobInfo info = new JobInfo.Builder(123, componentName)
+                            .setPersisted(true)
+                            .build();
+                    JobScheduler scheduler = (JobScheduler) getActivity().getSystemService(Context.JOB_SCHEDULER_SERVICE);
+                    int code = scheduler.schedule(info);
+
+                    if(code == JobScheduler.RESULT_SUCCESS)
+                        Log.d("TAG","JOB scheduled successfully");
+                    else
+                        Log.d("TAG","JOB scheduled failed");
+
+/*
+            //Setting up notificaiton
+            notificationManagerCompat =  notificationManagerCompat.from(getContext());
+            notification = new NotificationCompat.Builder(getContext(), NotificationMaker.Channel_LoginBack)
+                    .setContentTitle("Code School Login Reminder")
+                    .setContentText("Come back and practice multiplayer quizzes with real players online!")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setSmallIcon(R.drawable.android_image)
+                    .build();
+
+            notificationManagerCompat.notify(1, notification);*/
+
+                    getActivity().finish();
+                }
         );
 
         return v;
@@ -71,7 +109,7 @@ public class ProfileFragment extends Fragment {
 
 
         //Width for progress
-         androidCourseCompletedMaxWidth = (int)((TOTAL_WIDTH*2)/3);
+        androidCourseCompletedMaxWidth = (int) ((TOTAL_WIDTH * 2) / 3);
 
         //Getting db Instance
         dbHelper = DBHelper.getInstance(getContext());
@@ -90,15 +128,13 @@ public class ProfileFragment extends Fragment {
         int androidPecent = dbHelper.totalCompletionPercent("Android");
         int javaPecent = dbHelper.totalCompletionPercent("Java");
 
-        Log.d("TAG","Percent = "+androidPecent);
-
         //Completed Text
-        animatePercent(androidPecent,androidCompletedPercent,courseAndroidProgress);
-        animatePercent(javaPecent,javaCompletedPercent,courseJavaProgress);
+        animatePercent(androidPecent, androidCompletedPercent, courseAndroidProgress);
+        animatePercent(javaPecent, javaCompletedPercent, courseJavaProgress);
 
     }
 
-    public void animatePercent(int percent,TextView textView,View progressView){
+    public void animatePercent(int percent, TextView textView, View progressView) {
         mHandler = new Handler();
         new Thread(() -> {
             try {
@@ -106,22 +142,22 @@ public class ProfileFragment extends Fragment {
 
                 while (currentPercent < percent) {
                     Thread.sleep(10);
-                    currentPercent+=1;
-                    String percentString = currentPercent+"%";
+                    currentPercent += 1;
+                    String percentString = currentPercent + "%";
 
-                    int valueOfCurrentProgress = (androidCourseCompletedMaxWidth*currentPercent)/100;
+                    int valueOfCurrentProgress = (androidCourseCompletedMaxWidth * currentPercent) / 100;
 
                     mHandler.post(() -> {
                         textView.setText(percentString);
                         progressView.getLayoutParams().width = valueOfCurrentProgress;
                     });
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch (Exception e){e.printStackTrace();}
         }).start();
 
     }
-
 
 
 }

@@ -3,6 +3,7 @@
     package="com.codeschool.project">
 
     <application
+        android:name=".NotificationMaker"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".CourseEnrollment"></activity>
+
+        <activity android:name=".CourseEnrollment" />
         <activity
             android:name=".MainActivity"
             android:configChanges="screenSize|orientation|screenLayout|navigation" />
@@ -29,10 +31,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
+        <service
+            android:name="com.codeschool.Models.NotificationService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+    </application>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

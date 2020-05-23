@@ -54,7 +54,6 @@ public class Misc {
     }
 
 
-
     //Card click listener for the dialog. Used for quiz fragment where we show dialog to choose subject
     private static class CardClickedHandler implements  View.OnClickListener{
         CourseSelectedHandler handler;

@@ -5,58 +5,53 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import androidx.annotation.NonNull;
-
 public class QuizQuestionStatusModel {
 
     @SerializedName("question")
     @Expose
-    private String question;
-    @SerializedName("options")
+    private Question question;
+    @SerializedName("roomid")
     @Expose
-    private List<String> options = null;
-    @SerializedName("answer")
+    private String roomid;
+    @SerializedName("playerData")
     @Expose
-    private String answer;
-    @SerializedName("playerStatus")
+    private List<PlayerDatum> playerData = null;
+    @SerializedName("gameOver")
     @Expose
-    private List<Playerstatus> playerStatus = null;
+    private Boolean gameOver;
 
-    public String getQuestion() {
+    public Question getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
+    public void setQuestion(Question question) {
         this.question = question;
     }
 
-    public List<String> getOptions() {
-        return options;
+    public String getRoomid() {
+        return roomid;
     }
 
-    public void setOptions(List<String> options) {
-        this.options = options;
+    public void setRoomid(String roomid) {
+        this.roomid = roomid;
     }
 
-    public String getAnswer() {
-        return answer;
+    public List<PlayerDatum> getPlayerData() {
+        return playerData;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setPlayerData(List<PlayerDatum> playerData) {
+        this.playerData = playerData;
     }
 
-    public List<Playerstatus> getPlayerStatus() {
-        return playerStatus;
+    public Boolean getGameOver() {
+        return gameOver;
     }
 
-    public void setPlayerStatus(List<Playerstatus> playerStatus) {
-        this.playerStatus = playerStatus;
+    public void setGameOver(Boolean gameOver) {
+        this.gameOver = gameOver;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "question: "+question+" options: "+options+" answer: "+answer+" playerStatus: "+playerStatus;
-    }
+
+
 }

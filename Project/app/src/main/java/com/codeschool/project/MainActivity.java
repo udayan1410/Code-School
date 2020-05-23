@@ -137,17 +137,6 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onConfigurationChanged(newConfig);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
-//        Log.d("tag", "config changed");
-//        super.onConfigurationChanged(newConfig);
-//
-//        int orientation = newConfig.orientation;
-//        if (orientation == Configuration.ORIENTATION_PORTRAIT)
-//            Log.d("tag", "Portrait");
-//        else if (orientation == Configuration.ORIENTATION_LANDSCAPE)
-//            Log.d("tag", "Landscape");
-//        else
-//            Log.w("tag", "other: " + orientation);
-//
     }
 
 }

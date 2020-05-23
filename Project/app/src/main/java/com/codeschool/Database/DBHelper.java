@@ -48,7 +48,6 @@ public class DBHelper {
                 model.setTopicCompleted(Integer.parseInt(c.getString(c.getColumnIndex("topiccompleted"))));
                 topicModelList.add(model);
 
-                Log.d("TAG","Topic = "+model);
             }
         }
         return topicModelList;

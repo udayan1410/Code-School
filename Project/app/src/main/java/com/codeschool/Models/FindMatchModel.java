@@ -4,11 +4,20 @@ import androidx.annotation.NonNull;
 
 public class FindMatchModel {
 
-    private String course,id;
+    private String course,id,userName;
 
-    public FindMatchModel(String course, String id) {
+    public FindMatchModel(String course, String id,String userName) {
         this.course = course;
         this.id = id;
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getCourse() {

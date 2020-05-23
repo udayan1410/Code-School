@@ -9,7 +9,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/yourScore"
+        android:layout_below="@+id/enemyName"
         android:layout_above="@+id/submitButton"
         >
 
@@ -155,10 +155,21 @@
         android:paddingBottom="15dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:text="9"
+        android:text="0"
         android:textColor="@color/redEngine"
         android:textSize="25dp" />
 
+    <TextView
+        android:id="@+id/enemyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="6dp"
+        android:paddingRight="5dp"
+        android:layout_below="@+id/enemyScore"
+        android:text="Enemy name"
+        android:textColor="@color/redEngine"
+        android:textSize="25dp" />
 
     <TextView
         android:id="@+id/yourScore"
@@ -172,7 +183,19 @@
         android:paddingBottom="15dp"
         android:paddingLeft="25dp"
         android:paddingRight="25dp"
-        android:text="4"
+        android:text="0"
+        android:textColor="@color/green"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/yourName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:paddingLeft="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/yourScore"
+        android:text="Your name"
         android:textColor="@color/green"
         android:textSize="25dp" />
 
