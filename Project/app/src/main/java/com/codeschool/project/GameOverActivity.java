@@ -22,6 +22,7 @@ import com.codeschool.Network.NetworkCient;
 import com.codeschool.Network.WebSocket;
 import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.gson.Gson;
 
@@ -30,12 +31,13 @@ import org.json.JSONObject;
 public class GameOverActivity extends AppCompatActivity {
 
     String sessionId, playerId;
-    NetworkCient.ServerCommunicator communicator;
     Dialog dialog;
     ImageView imageView;
     TextView gameText;
     CardView gameDone;
     Socket mSocket;
+    NetworkCient.ServerCommunicator communicator;
+    WinnerStatusModel winnerStatusModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,8 @@ public class GameOverActivity extends AppCompatActivity {
         gameText = findViewById(R.id.gameOverText);
         gameDone = findViewById(R.id.gameDone);
         gameDone.setOnClickListener(new GameDoneHandler());
+
+
 
         //Fetching the session ID
         Gson gson = new Gson();
@@ -70,6 +74,9 @@ public class GameOverActivity extends AppCompatActivity {
 
         //Getting the socket
         mSocket = WebSocket.getSocket();
+
+        //Getting communicator
+        communicator = NetworkCient.getClient(Constants.SERVER_URL);
     }
 
     public void fetchWinner() {
@@ -82,6 +89,7 @@ public class GameOverActivity extends AppCompatActivity {
             jsonObject.put("sessionid", sessionId);
 
             mSocket.emit("MatchOver", jsonObject.toString());
+            mSocket.on("MatchOver", new WinnerIDHandler());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,6 +100,38 @@ public class GameOverActivity extends AppCompatActivity {
 //        call.enqueue(new WinnerHandler());
     }
 
+    private class WinnerIDHandler implements Emitter.Listener {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(()->{
+                dialog.dismiss();
+                JSONObject jsonObject = (JSONObject) args[0];
+                Gson gson = new Gson();
+                winnerStatusModel = gson.fromJson(jsonObject.toString(), WinnerStatusModel.class);
+
+//                Misc.showToast(GameOverActivity.this, "Winner id = " + winnerStatusModel.getWinnerId());
+
+                String status="Its a Tie";
+                int gif = R.drawable.itsatie;
+
+                if(winnerStatusModel.getWinnerId().equalsIgnoreCase(playerId)){
+                    status="Congratulations ! You Win";
+                    gif = R.drawable.youwin;
+                }
+                else{
+                    status="You Lose! Try again next time";
+                    gif = R.drawable.you_lose;
+                }
+
+                gameText.setText(status);
+                Glide.with(GameOverActivity.this).asGif().load(gif).into(imageView);
+
+            });
+        }
+    }
+
+
+    /*
     private class WinnerHandler implements Callback<WinnerStatusModel> {
         @Override
         public void onResponse(Call<WinnerStatusModel> call, Response<WinnerStatusModel> response) {
@@ -121,10 +161,14 @@ public class GameOverActivity extends AppCompatActivity {
             Misc.showToast(GameOverActivity.this, "Something Went Wrong : Game Over");
         }
     }
+*/
+
 
     private class GameDoneHandler implements View.OnClickListener {
         @Override
         public void onClick(View v) {
+
+
             //Show Dialog as we are fetching new streak data
             dialog = Misc.createDialog(GameOverActivity.this, R.layout.dialog_progress, "Wrapping Up!");
             dialog.show();
@@ -136,7 +180,6 @@ public class GameOverActivity extends AppCompatActivity {
             LoginModel loginModel = new LoginModel(statusModel.getUserData().getEmail(), statusModel.getUserData().getPassword());
             Call<LoginStatusModel> call = communicator.sendLoginData(loginModel);
             call.enqueue(new LoginSuccess());
-
         }
     }
 

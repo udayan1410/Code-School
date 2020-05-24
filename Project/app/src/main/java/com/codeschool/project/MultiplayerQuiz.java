@@ -317,6 +317,9 @@ public class MultiplayerQuiz extends AppCompatActivity {
     private class GameOverHandler implements  Emitter.Listener{
         @Override
         public void call(Object... args) {
+            if (submitAnswerDialog.isShowing())
+                submitAnswerDialog.dismiss();
+
             startActivity(new Intent(MultiplayerQuiz.this,GameOverActivity.class));
             finish();
         }
