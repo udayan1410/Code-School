@@ -18,6 +18,7 @@ import com.codeschool.Utils.Constants;
 import com.codeschool.Utils.Misc;
 import com.codeschool.project.MultiplayerQuiz;
 import com.codeschool.project.R;
+import com.codeschool.project.SingleplayerQuiz;
 import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
@@ -37,7 +38,7 @@ import retrofit2.Response;
 
 public class QuizFragment extends Fragment {
 
-    CardView multiplayerQuiz;
+    CardView multiplayerQuiz, singlePlayerQuiz;
     NetworkCient.ServerCommunicator communicator;
     Dialog dialog;
     FindMatchModel findMatchModel;
@@ -56,17 +57,14 @@ public class QuizFragment extends Fragment {
         connectToServer();
 
         multiplayerQuiz = v.findViewById(R.id.multiPlayer);
-        multiplayerQuiz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                courseSelectionDialog = Misc.createDialog(getContext(), course -> {
-                    //Start Timer. If timer more than 20seconds then cancel find
-                    Thread thread = new Thread(new Timer());
-                    thread.start();
+        singlePlayerQuiz = v.findViewById(R.id.singlePlayer);
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+        multiplayerQuiz.setOnClickListener(clickListener -> {
+            courseSelectionDialog = Misc.createDialog(getContext(), course -> {
+                //Start Timer. If timer more than 20seconds then cancel find
+                Thread thread = new Thread(new Timer());
+                thread.start();
+                getActivity().runOnUiThread(() -> {
                             //Showing loading dialog
                             dialog.show();
 
@@ -86,19 +84,31 @@ public class QuizFragment extends Fragment {
 
                             courseSelectionDialog.dismiss();
                         }
-                    });
-                });
+                );
+            });
+            courseSelectionDialog.show();
+        });
 
-                courseSelectionDialog.show();
+        singlePlayerQuiz.setOnClickListener(clickListener -> {
+            courseSelectionDialog = Misc.createDialog(getContext(), course -> {
+                Intent intent = new Intent(getContext(), SingleplayerQuiz.class);
+                intent.putExtra("course",course);
 
-            }
+
+
+            });
+            courseSelectionDialog.show();
         });
 
         return v;
     }
 
     public void connectToServer() {
+
+
         try {
+
+            Log.d("TAG","Connecting to server");
             mSocket = IO.socket(Constants.REALTIME_SERVER_URL);
             mSocket.connect();
             //Setting the socket object to be used later
@@ -113,7 +123,7 @@ public class QuizFragment extends Fragment {
     private class FindMatchSuccessHandler implements Emitter.Listener {
         @Override
         public void call(Object... args) {
-            if(getActivity()!=null) {
+            if (getActivity() != null) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -159,6 +169,7 @@ public class QuizFragment extends Fragment {
 
             dialog.dismiss();
             startActivity(new Intent(getActivity(), MultiplayerQuiz.class));
+            getActivity().onBackPressed();
         }
 
         @Override
@@ -198,5 +209,6 @@ public class QuizFragment extends Fragment {
         });
 
     }
+
 
 }

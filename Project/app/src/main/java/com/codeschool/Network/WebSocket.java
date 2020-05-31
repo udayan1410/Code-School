@@ -1,5 +1,6 @@
 package com.codeschool.Network;
 
+
 import com.github.nkzawa.socketio.client.Socket;
 
 public class WebSocket {

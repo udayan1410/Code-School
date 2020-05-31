@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpTextView = findViewById(R.id.loginCreate);
         loginImage = findViewById(R.id.loginImage);
 
-        Glide.with(this).load(R.drawable.python_image).into(loginImage);
+        Glide.with(this).load(R.drawable.logo).into(loginImage);
         loadingDialog = Misc.createDialog(LoginActivity.this, R.layout.dialog_progress, "Logging in");
     }
 

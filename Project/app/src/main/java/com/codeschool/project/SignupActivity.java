@@ -13,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.codeschool.Models.SignupModel;
 import com.codeschool.Models.SignupStatusModel;
 import com.codeschool.Network.NetworkCient;
@@ -26,6 +28,7 @@ public class SignupActivity extends AppCompatActivity {
     EditText username,email,password;
     NetworkCient.ServerCommunicator communicator;
     Dialog dialog;
+    ImageView signupImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,9 @@ public class SignupActivity extends AppCompatActivity {
         email = findViewById(R.id.signupEmail);
         password = findViewById(R.id.signupPassword);
         username = findViewById(R.id.signupUsername);
+        signupImage = findViewById(R.id.signupImage);
+
+        Glide.with(SignupActivity.this).load(R.drawable.logo).into(signupImage);
         dialog = Misc.createDialog(SignupActivity.this,R.layout.dialog_progress,"Signing up");
     }
 

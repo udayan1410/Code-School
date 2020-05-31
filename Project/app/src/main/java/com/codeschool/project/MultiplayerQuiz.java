@@ -41,6 +41,7 @@ public class MultiplayerQuiz extends AppCompatActivity {
     NetworkCient.ServerCommunicator communicator;
     String sessionId, playerId;
     Dialog fetchingNextQuestionDialog, submitAnswerDialog;
+    boolean called = false;
 
     Socket mSocket;
 
@@ -83,7 +84,7 @@ public class MultiplayerQuiz extends AppCompatActivity {
 
         mSocket = WebSocket.getSocket();
         mSocket.on("GetQuestionEvent", new QuestionGetter());
-        mSocket.on("GameOver",new GameOverHandler());
+        mSocket.on("GameOver", new GameOverHandler());
 
         Gson gson = new Gson();
         //Getting player ID in json format
@@ -291,8 +292,7 @@ public class MultiplayerQuiz extends AppCompatActivity {
                 if (datum.getPlayerid().equalsIgnoreCase(playerId)) {
                     your_score = datum.getPlayerScore();
                     your_name = datum.getUserName();
-                }
-                else {
+                } else {
                     enemy_score = datum.getPlayerScore();
                     enemy_name = datum.getUserName();
                 }
@@ -306,21 +306,26 @@ public class MultiplayerQuiz extends AppCompatActivity {
             setQuestionText(optionText4, option4);
             setQuestionText(yourScoreText, String.valueOf(your_score));
             setQuestionText(enemyScoreText, String.valueOf(enemy_score));
-            setQuestionText(yourName,your_name);
-            setQuestionText(enemyName,enemy_name);
+            setQuestionText(yourName, your_name);
+            setQuestionText(enemyName, enemy_name);
 
             //Dismissing the dialog as we have fetched question
             fetchingNextQuestionDialog.dismiss();
         }
     }
 
-    private class GameOverHandler implements  Emitter.Listener{
+    private class GameOverHandler implements Emitter.Listener {
         @Override
         public void call(Object... args) {
             if (submitAnswerDialog.isShowing())
                 submitAnswerDialog.dismiss();
 
-            startActivity(new Intent(MultiplayerQuiz.this,GameOverActivity.class));
+            if (!called) {
+                startActivity(new Intent(MultiplayerQuiz.this, GameOverActivity.class));
+                finish();
+            }
+
+            called = true;
             finish();
         }
     }

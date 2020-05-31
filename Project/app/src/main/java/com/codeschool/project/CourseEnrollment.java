@@ -46,6 +46,7 @@ public class CourseEnrollment extends AppCompatActivity {
             courseDescription = "Android from Grass Root Level";
             courseImageResource = R.drawable.android_image;
         } else {
+            Log.d("TAG","In java course enrollment");
             courseDescription = "Java: An Object Oriented Approach";
             courseImageResource = R.mipmap.java_image;
         }

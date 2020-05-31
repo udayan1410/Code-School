@@ -24,9 +24,8 @@ public class DBHelper {
 
 
     public static DBHelper getInstance(Context context) {
-        if (dbHelper == null) {
+        if (dbHelper == null)
             dbHelper = new DBHelper(context);
-        }
         return dbHelper;
     }
 
@@ -48,8 +47,10 @@ public class DBHelper {
                 model.setTopicCompleted(Integer.parseInt(c.getString(c.getColumnIndex("topiccompleted"))));
                 topicModelList.add(model);
 
+                Log.d("TAG",""+model);
             }
         }
+        Log.d("TAG","Returning "+coursename+" List "+topicModelList.size());
         return topicModelList;
     }
 

@@ -9,7 +9,23 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".SignupActivity">
+        tools:context=".SignupActivity"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/signupDetailsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter Signup Details : "
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/signupImage"
+            android:textSize="25dp"
+            android:textColor="@color/darkBlue"
+            android:layout_marginTop="10dp"
+            />
 
         <Button
             android:id="@+id/signupButton"
@@ -21,6 +37,7 @@
             android:text="Signup"
             android:textColor="@color/white"
             android:textSize="20dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/signupPassword"
@@ -57,13 +74,13 @@
             android:id="@+id/signupEmail"
             android:layout_width="0dp"
             android:layout_height="80dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:hint="Email Id"
             android:textSize="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/signupImage"
+            app:layout_constraintTop_toBottomOf="@id/signupDetailsText"
             app:layout_constraintWidth_percent="0.8"></EditText>
 
         <ImageView

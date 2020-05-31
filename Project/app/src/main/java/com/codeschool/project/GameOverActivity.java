@@ -61,6 +61,8 @@ public class GameOverActivity extends AppCompatActivity {
         Gson gson = new Gson();
         String findMatchStatusJson = Misc.getStringFromSharedPref(GameOverActivity.this, Constants.SESSIONDATA, Constants.SESSIONDATA);
         FindMatchStatusModel findMatchStatusModel = gson.fromJson(findMatchStatusJson, FindMatchStatusModel.class);
+
+        Log.d("TAG","SessionData = "+findMatchStatusModel);
         //Getting the session ID
         sessionId = findMatchStatusModel.getSessionId();
 
@@ -84,6 +86,7 @@ public class GameOverActivity extends AppCompatActivity {
 
 
         try {
+
             //Sending the match over signal to get back the winner id
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("sessionid", sessionId);
@@ -92,6 +95,7 @@ public class GameOverActivity extends AppCompatActivity {
             mSocket.on("MatchOver", new WinnerIDHandler());
 
         } catch (Exception e) {
+            Log.d("TAG","MSG = "+e.getMessage());
             e.printStackTrace();
         }
 
@@ -104,27 +108,29 @@ public class GameOverActivity extends AppCompatActivity {
         @Override
         public void call(Object... args) {
             runOnUiThread(()->{
-                dialog.dismiss();
-                JSONObject jsonObject = (JSONObject) args[0];
-                Gson gson = new Gson();
-                winnerStatusModel = gson.fromJson(jsonObject.toString(), WinnerStatusModel.class);
 
-//                Misc.showToast(GameOverActivity.this, "Winner id = " + winnerStatusModel.getWinnerId());
+                try {
 
-                String status="Its a Tie";
-                int gif = R.drawable.itsatie;
+                    dialog.dismiss();
+                    JSONObject jsonObject = (JSONObject) args[0];
+                    Gson gson = new Gson();
+                    winnerStatusModel = gson.fromJson(jsonObject.toString(), WinnerStatusModel.class);
 
-                if(winnerStatusModel.getWinnerId().equalsIgnoreCase(playerId)){
-                    status="Congratulations ! You Win";
-                    gif = R.drawable.youwin;
+                    String status = "Its a Tie";
+                    int gif = R.drawable.itsatie;
+
+                    if (winnerStatusModel.getWinnerId().equalsIgnoreCase(playerId)) {
+                        status = "Congratulations ! You Win";
+                        gif = R.drawable.youwin;
+                    } else if(!winnerStatusModel.getWinnerId().equalsIgnoreCase("Both")){
+                        status = "You Lose! Try again next time";
+                        gif = R.drawable.you_lose;
+                    }
+
+                    gameText.setText(status);
+                    Glide.with(getApplicationContext()).asGif().load(gif).into(imageView);
                 }
-                else{
-                    status="You Lose! Try again next time";
-                    gif = R.drawable.you_lose;
-                }
-
-                gameText.setText(status);
-                Glide.with(GameOverActivity.this).asGif().load(gif).into(imageView);
+                catch (Exception e){Log.d("TAG","ERROR MSG = "+e.getMessage());}
 
             });
         }

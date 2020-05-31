@@ -269,20 +269,22 @@
 
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:background="@color/colorPrimary"
+                android:clickable="true"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:layout_below="@+id/multiPlayerBadgeContainer"
+                android:text="Logout"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
         </RelativeLayout>
+
     </ScrollView>
-    <Button
-        android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:background="@color/colorPrimary"
-        android:clickable="true"
-        android:foreground="?selectableItemBackground"
-        android:gravity="center"
-        android:text="Logout"
-        android:textColor="@color/white"
-        android:textSize="20dp" />
+
 </RelativeLayout>
