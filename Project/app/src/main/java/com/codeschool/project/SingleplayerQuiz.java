@@ -3,6 +3,7 @@ package com.codeschool.project;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,7 @@ public class SingleplayerQuiz extends AppCompatActivity {
     TextView yourScore,optionText1, optionText2, optionText3, optionText4, questionText,currentlySelectedText=null;
     int index=0;
     List<Question> questionList;
-    int singlePlayerScore = 0;
+    Integer score = 0;
     String courseName;
     DBHelper dbHelper;
 
@@ -131,14 +132,19 @@ public class SingleplayerQuiz extends AppCompatActivity {
 
                 case R.id.submitButton:
                     if(currentlySelectedText.getText().toString().equalsIgnoreCase(questionList.get(index).getAnswer())) {
-                        Integer score = Integer.parseInt(yourScore.getText().toString());
+                        score = Integer.parseInt(yourScore.getText().toString());
                         score += 1;
                         yourScore.setText("" + score);
                     }
 
                     index++;
-                    if(questionList.size() == index)
+                    if(questionList.size() == index) {
                         Toast.makeText(SingleplayerQuiz.this, "End of Quiz", Toast.LENGTH_SHORT).show();
+                        finish();
+                        Intent intent = new Intent(SingleplayerQuiz.this,SinglePlayerFinalScore.class);
+                        intent.putExtra("score",""+score);
+                        startActivity(intent);
+                    }
                     else {
                         setQuestionAndOption();
                         submitButton.setClickable(false);

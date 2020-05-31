@@ -91,6 +91,7 @@ public class QuizFragment extends Fragment {
 
         singlePlayerQuiz.setOnClickListener(clickListener -> {
             courseSelectionDialog = Misc.createDialog(getContext(), course -> {
+                courseSelectionDialog.dismiss();
                 Intent intent = new Intent(getContext(), SingleplayerQuiz.class);
                 intent.putExtra("course",course);
                 startActivity(intent);

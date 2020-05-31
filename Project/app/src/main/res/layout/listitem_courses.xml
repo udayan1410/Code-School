@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         app:cardCornerRadius="5dp"
-        android:layout_below="@+id/noCoursesText"
+
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/java_image" />
+                 />
 
             <TextView
                 android:id="@+id/courseName"
@@ -72,6 +72,9 @@
 
 
             <TextView
+                android:id="@+id/videoTutorial"
+                android:clickable="true"
+                android:foreground="?android:selectableItemBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"

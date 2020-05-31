@@ -236,7 +236,6 @@ public class MultiplayerQuiz extends AppCompatActivity {
     }
 
 
-
     private class QuestionGetter implements Emitter.Listener {
 
         public void setQuestionText(TextView questionText, String question) {
@@ -299,13 +298,8 @@ public class MultiplayerQuiz extends AppCompatActivity {
             if (submitAnswerDialog.isShowing())
                 submitAnswerDialog.dismiss();
 
-            if (!called) {
-                startActivity(new Intent(MultiplayerQuiz.this, GameOverActivity.class));
-                finish();
-            }
-
-            called = true;
             finish();
+            startActivity(new Intent(MultiplayerQuiz.this, GameOverActivity.class));
         }
     }
 

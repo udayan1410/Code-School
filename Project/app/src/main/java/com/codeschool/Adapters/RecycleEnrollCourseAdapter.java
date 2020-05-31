@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codeschool.Models.CoursesEnrolledModel;
+import com.codeschool.project.NewsView;
 import com.codeschool.project.R;
 import com.codeschool.project.TopicsActivity;
 
@@ -41,15 +42,30 @@ public class RecycleEnrollCourseAdapter extends RecyclerView.Adapter<RecycleEnro
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-            holder.courseName.setText(coursesEnrolledModel.getCoursesEnrolled().get(position));
-            holder.courseInfo.setText(coursesEnrolledModel.getCoursesEnrolledInformation().get(position));
-            Glide.with(context).load(coursesEnrolledModel.getCourseImage().get(position)).into(holder.courseImage);
+        holder.courseName.setText(coursesEnrolledModel.getCoursesEnrolled().get(position));
+        holder.courseInfo.setText(coursesEnrolledModel.getCoursesEnrolledInformation().get(position));
+        Glide.with(context).load(coursesEnrolledModel.getCourseImage().get(position)).into(holder.courseImage);
 
-            holder.startResumeCourse.setOnClickListener(v -> {
-                Intent intent = new Intent(context, TopicsActivity.class);
-                intent.putExtra("course", coursesEnrolledModel.getCoursesEnrolled().get(position));
-                context.startActivity(intent);
-            });
+        holder.startResumeCourse.setOnClickListener(v -> {
+            Intent intent = new Intent(context, TopicsActivity.class);
+            intent.putExtra("course", coursesEnrolledModel.getCoursesEnrolled().get(position));
+            context.startActivity(intent);
+        });
+
+        holder.videoTutorial.setOnClickListener(v -> {
+            Intent intent = new Intent(context, NewsView.class);
+            switch (coursesEnrolledModel.getCoursesEnrolled().get(position)) {
+                case "Android":
+                    intent.putExtra("url", "https://www.youtube.com/watch?v=bgIUdb-7Rqo&list=PLrnPJCHvNZuCaFbD-1TsnRaO39huczYcA");
+                    break;
+
+                case "Java":
+                    intent.putExtra("url", "https://www.youtube.com/watch?v=r59xYe3Vyks&list=PLS1QulWo1RIbfTjQvTdj8Y6yyq4R7g-Al");
+                    break;
+            }
+            context.startActivity(intent);
+
+        });
 
     }
 
@@ -63,6 +79,7 @@ public class RecycleEnrollCourseAdapter extends RecyclerView.Adapter<RecycleEnro
         private TextView courseInfo;
         private ImageView courseImage;
         private TextView startResumeCourse;
+        private TextView videoTutorial;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -71,6 +88,7 @@ public class RecycleEnrollCourseAdapter extends RecyclerView.Adapter<RecycleEnro
             courseImage = itemView.findViewById(R.id.courseImage);
             courseInfo = itemView.findViewById(R.id.courseInfo);
             courseName = itemView.findViewById(R.id.courseName);
+            videoTutorial = itemView.findViewById(R.id.videoTutorial);
 
         }
     }
