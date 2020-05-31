@@ -93,9 +93,7 @@ public class QuizFragment extends Fragment {
             courseSelectionDialog = Misc.createDialog(getContext(), course -> {
                 Intent intent = new Intent(getContext(), SingleplayerQuiz.class);
                 intent.putExtra("course",course);
-
-
-
+                startActivity(intent);
             });
             courseSelectionDialog.show();
         });

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeschool.Database.DBHelper;
 import com.codeschool.Models.Question;
 import com.codeschool.Models.QuizAnswerModel;
 import com.google.gson.Gson;
@@ -22,28 +23,24 @@ public class SingleplayerQuiz extends AppCompatActivity {
     int index=0;
     List<Question> questionList;
     int singlePlayerScore = 0;
+    String courseName;
+    DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singleplayer_quiz);
 
+        courseName = getIntent().getStringExtra("course");
+        char[] strArr = courseName.toLowerCase().toCharArray();
+        strArr[0] = Character.toUpperCase(strArr[0]);
+        courseName = new String(strArr);
+
         init();
         setQuestionAndOption();
 
 
-        submitButton.setOnClickListener(v->{
 
-            //Answer correct , goes in IF
-            if(currentlySelectedText.getText().toString().equalsIgnoreCase(questionList.get(index).getAnswer())){
-                Integer score = Integer.parseInt(yourScore.getText().toString());
-                score+=1;
-                yourScore.setText(score);
-                index++;
-
-                setQuestionAndOption();
-            }
-        });
     }
 
     public void init(){
@@ -61,15 +58,16 @@ public class SingleplayerQuiz extends AppCompatActivity {
 
         yourScore = findViewById(R.id.yourScore);
         //get Question list from DB
+        dbHelper = new DBHelper(this);
+        questionList = dbHelper.getSinglePlayerQuestions(courseName);
 
         //Set on click listener on cards
         option1.setOnClickListener(new OptionClickHandler());
         option2.setOnClickListener(new OptionClickHandler());
         option3.setOnClickListener(new OptionClickHandler());
         option4.setOnClickListener(new OptionClickHandler());
-
+        submitButton.setOnClickListener(new OptionClickHandler());
     }
-
 
     public void setQuestionAndOption(){
         //Getting options from the question's index's arraylist position
@@ -104,6 +102,7 @@ public class SingleplayerQuiz extends AppCompatActivity {
                     currentlySelectedText = optionText1;
                     changeColors(option1, optionText1, getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.white));
                     submitButton.setEnabled(true);
+                    submitButton.setClickable(true);
                     break;
 
                 case R.id.option2:
@@ -111,6 +110,7 @@ public class SingleplayerQuiz extends AppCompatActivity {
                     currentlySelectedText = optionText2;
                     changeColors(option2, optionText2, getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.white));
                     submitButton.setEnabled(true);
+                    submitButton.setClickable(true);
                     break;
 
                 case R.id.option3:
@@ -118,6 +118,7 @@ public class SingleplayerQuiz extends AppCompatActivity {
                     currentlySelectedText = optionText3;
                     changeColors(option3, optionText3, getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.white));
                     submitButton.setEnabled(true);
+                    submitButton.setClickable(true);
                     break;
 
                 case R.id.option4:
@@ -125,21 +126,31 @@ public class SingleplayerQuiz extends AppCompatActivity {
                     currentlySelectedText = optionText4;
                     changeColors(option4, optionText4, getResources().getColor(R.color.colorPrimaryDark), getResources().getColor(R.color.white));
                     submitButton.setEnabled(true);
+                    submitButton.setClickable(true);
                     break;
 
                 case R.id.submitButton:
-                    if(currentlySelectedText.getText().toString().equalsIgnoreCase(questionList.get(index).getAnswer()))
-                        singlePlayerScore+=1;
+                    if(currentlySelectedText.getText().toString().equalsIgnoreCase(questionList.get(index).getAnswer())) {
+                        Integer score = Integer.parseInt(yourScore.getText().toString());
+                        score += 1;
+                        yourScore.setText("" + score);
+                    }
 
-                    index+=1;
+                    index++;
                     if(questionList.size() == index)
                         Toast.makeText(SingleplayerQuiz.this, "End of Quiz", Toast.LENGTH_SHORT).show();
-
+                    else {
+                        setQuestionAndOption();
+                        submitButton.setClickable(false);
+                        submitButton.setEnabled(false);
+                    }
                     break;
             }
 
             if (submitButton.isClickable())
                 submitButton.setCardBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+            else
+                submitButton.setCardBackgroundColor(getResources().getColor(R.color.gray));
         }
     }
 

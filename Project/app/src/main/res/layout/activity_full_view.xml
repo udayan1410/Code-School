@@ -4,31 +4,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".FullViewActivity">
+        tools:context=".FullViewActivity"
+        >
 
         <androidx.cardview.widget.CardView
             android:id="@+id/subtopicImageContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/subtopicNameContainer"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="15dp"
             app:cardElevation="6dp"
-            >
+            app:layout_goneMarginTop="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/subtopicNameContainer">
 
             <ImageView
                 android:id="@+id/subtopicImage"
-                android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:layout_margin="8dp"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/java_image" />
 
@@ -39,10 +37,10 @@
             android:id="@+id/subtopicNameContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            app:cardElevation="6dp"
+            android:layout_margin="15dp"
             android:padding="5dp"
-            >
+            app:cardElevation="6dp"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/subtopicName"
@@ -50,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="SAmple text"
+                android:text="Sample text"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="25dp"
                 android:textStyle="bold" />
@@ -62,24 +60,20 @@
             android:id="@+id/subtopicInfoContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@+id/subtopicImageContainer"
+            android:layout_margin="15dp"
             app:cardElevation="6dp"
+            app:layout_constraintTop_toBottomOf="@+id/subtopicImageContainer"
+            app:layout_constraintBottom_toBottomOf="parent"
             >
 
             <TextView
                 android:id="@+id/subtopicInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_margin="10dp"
                 android:text="SAmple info"
                 android:textColor="@color/darkerGray"
-                android:textSize="18dp"
-                android:layout_margin="5dp"
-                />
+                android:textSize="18dp" />
         </androidx.cardview.widget.CardView>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

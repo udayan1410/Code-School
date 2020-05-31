@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.codeschool.Models.Question;
 import com.codeschool.Models.SubtopicDescriptionModel;
 import com.codeschool.Models.SubtopicModel;
 import com.codeschool.Models.TopicModel;
@@ -47,10 +48,10 @@ public class DBHelper {
                 model.setTopicCompleted(Integer.parseInt(c.getString(c.getColumnIndex("topiccompleted"))));
                 topicModelList.add(model);
 
-                Log.d("TAG",""+model);
+                Log.d("TAG", "" + model);
             }
         }
-        Log.d("TAG","Returning "+coursename+" List "+topicModelList.size());
+        Log.d("TAG", "Returning " + coursename + " List " + topicModelList.size());
         return topicModelList;
     }
 
@@ -123,6 +124,35 @@ public class DBHelper {
         String percent = roundedPercent + "";
         percent = percent.substring(0, percent.length() - 2);
         return Integer.parseInt(percent);
+    }
+
+    public List<Question> getSinglePlayerQuestions(String courseName) {
+        List<Question> questionList = new ArrayList<>();
+
+        String query = "SELECT * FROM SingleQuiz where coursename='" + courseName + "'";
+
+        Cursor c = db.rawQuery(query, null);
+
+        Log.d("TAG","Final Query = "+query+" count = "+c.getCount());
+        while (c.moveToNext()) {
+            Question question = new Question();
+            question.setId(Integer.parseInt(c.getString(c.getColumnIndex("id"))));
+            question.setQuestion(c.getString(c.getColumnIndex("question")));
+            question.setAnswer(c.getString(c.getColumnIndex("answer")));
+
+            List<String> optionsArray = new ArrayList<>();
+            optionsArray.add(c.getString(c.getColumnIndex("option1")));
+            optionsArray.add(c.getString(c.getColumnIndex("option2")));
+            optionsArray.add(c.getString(c.getColumnIndex("option3")));
+            optionsArray.add(c.getString(c.getColumnIndex("option4")));
+
+            question.setOptions(optionsArray);
+
+            Log.d("TAG","Got Question  = "+question);
+            questionList.add(question);
+        }
+
+        return questionList;
     }
 
 

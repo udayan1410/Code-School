@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 OutputStream myOutput = new FileOutputStream(outFileName);
                 byte[] buffer = new byte[1024];
                 int length;
-                while ((length = myInput.read(buffer)) > 0) {
+                while ((length = myInput.read(buffer)) > 0)
                     myOutput.write(buffer, 0, length);
-                }
+
                 myOutput.flush();
                 myOutput.close();
                 myInput.close();

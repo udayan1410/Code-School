@@ -235,28 +235,7 @@ public class MultiplayerQuiz extends AppCompatActivity {
 
     }
 
-    /*
-    private class AnswerPostedHandler implements Callback<QuizAnswerStatusModel> {
-        @Override
-        public void onResponse(Call<QuizAnswerStatusModel> call, Response<QuizAnswerStatusModel> response) {
-            QuizAnswerStatusModel quizAnswerStatusModel = response.body();
-            submitAnswerDialog.dismiss();
-            //Quiz is not ended
-            if (!quizAnswerStatusModel.getIsEndOfQuiz()) {
 
-            } else {
-                startActivity(new Intent(MultiplayerQuiz.this, GameOverActivity.class));
-                finish();
-            }
-
-        }
-
-        @Override
-        public void onFailure(Call<QuizAnswerStatusModel> call, Throwable t) {
-            Log.d("TAG", "Error " + t.getMessage());
-        }
-    }
-*/
 
     private class QuestionGetter implements Emitter.Listener {
 
