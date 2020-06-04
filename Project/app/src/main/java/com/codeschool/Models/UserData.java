@@ -11,9 +11,9 @@ public class UserData {
     @SerializedName("MultiPlayerStreak")
     @Expose
     private String multiPlayerStreak;
-    @SerializedName("SinglePlayerStreak")
+    @SerializedName("CurrentStreak")
     @Expose
-    private String singlePlayerStreak;
+    private String currentStreak;
     @SerializedName("email")
     @Expose
     private String email;
@@ -35,12 +35,12 @@ public class UserData {
         this.multiPlayerStreak = multiPlayerStreak;
     }
 
-    public String getSinglePlayerStreak() {
-        return singlePlayerStreak;
+    public String getcurrentStreak() {
+        return currentStreak;
     }
 
     public void setSinglePlayerStreak(String singlePlayerStreak) {
-        this.singlePlayerStreak = singlePlayerStreak;
+        this.currentStreak = singlePlayerStreak;
     }
 
     public String getEmail() {
@@ -79,6 +79,6 @@ public class UserData {
     @NonNull
     @Override
     public String toString() {
-        return "Id : "+id+" Email:  "+email+" Username: "+username+" single: "+singlePlayerStreak+" multi: "+multiPlayerStreak;
+        return "Id : "+id+" Email:  "+email+" Username: "+username+" currentStreak: "+currentStreak+" multi: "+multiPlayerStreak;
     }
 }

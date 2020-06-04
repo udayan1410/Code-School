@@ -40,7 +40,7 @@ import androidx.fragment.app.Fragment;
 
 public class ProfileFragment extends Fragment {
 
-    TextView welcomeText, multiPlayerStreakText, singlePlayerStreakText, androidCompletedPercent, javaCompletedPercent;
+    TextView welcomeText, multiPlayerStreakText, currentPlayerStreakText, androidCompletedPercent, javaCompletedPercent;
     Gson gson;
     DBHelper dbHelper;
     Handler mHandler;
@@ -100,7 +100,7 @@ public class ProfileFragment extends Fragment {
         gson = new Gson();
 
         welcomeText = v.findViewById(R.id.welcomeText);
-        singlePlayerStreakText = v.findViewById(R.id.singlePlayerStreakText);
+        currentPlayerStreakText = v.findViewById(R.id.currentPlayerStreakText);
         multiPlayerStreakText = v.findViewById(R.id.multiPlayerStreakText);
         androidCompletedPercent = v.findViewById(R.id.androidCompletedPercent);
         javaCompletedPercent = v.findViewById(R.id.javaCompletedPercent);
@@ -120,7 +120,7 @@ public class ProfileFragment extends Fragment {
         LoginStatusModel loginStatusModel = gson.fromJson(loginStatusModelJson, LoginStatusModel.class);
 
         welcomeText.setText(loginStatusModel.getUserData().getUsername());
-        singlePlayerStreakText.setText(loginStatusModel.getUserData().getSinglePlayerStreak());
+        currentPlayerStreakText.setText(loginStatusModel.getUserData().getcurrentStreak());
         multiPlayerStreakText.setText(loginStatusModel.getUserData().getMultiPlayerStreak());
 
         //Getting percentage completed data from DB

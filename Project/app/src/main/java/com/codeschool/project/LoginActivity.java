@@ -99,6 +99,8 @@ public class LoginActivity extends AppCompatActivity {
             //Parse the data
             LoginStatusModel loginStatusModel = response.body();
 
+            Log.d("TAG","Current Streak = "+loginStatusModel);
+
             //Login status failed
             if (!loginStatusModel.getStatus().equals("Success"))
                 Misc.showToast(LoginActivity.this, loginStatusModel.getStatus());

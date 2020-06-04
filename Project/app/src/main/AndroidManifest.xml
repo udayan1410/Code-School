@@ -18,11 +18,16 @@
         <activity android:name=".CourseEnrollment" />
         <activity
             android:name=".MainActivity"
-            android:configChanges="screenSize|orientation|screenLayout|navigation" />
+            android:configChanges="screenSize|orientation|screenLayout|navigation"
+
+            />
         <activity android:name=".FullViewActivity" />
         <activity android:name=".SubtopicsActivity" />
         <activity android:name=".TopicsActivity" />
-        <activity android:name=".NewsView" />
+        <activity
+            android:name=".NewsView"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+        />
         <activity android:name=".GameOverActivity" />
         <activity android:name=".MultiplayerQuiz" />
         <activity android:name=".SignupActivity" />
@@ -38,6 +43,7 @@
             android:name="com.codeschool.Models.NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
