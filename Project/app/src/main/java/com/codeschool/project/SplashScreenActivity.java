@@ -3,6 +3,7 @@ package com.codeschool.project;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,7 +18,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splashscreen);
         logo = (ImageView) findViewById(R.id.logo);
-
+        getSupportActionBar().hide();
 
         this.i = new Intent(this, LoginActivity.class);
         new Thread() {

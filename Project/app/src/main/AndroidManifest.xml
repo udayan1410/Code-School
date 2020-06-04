@@ -13,11 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SplashScreenActivity"> <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".SplashScreenActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".SinglePlayerFinalScore" />
         <activity android:name=".SingleplayerQuiz" />
         <activity android:name=".CourseEnrollment" />
@@ -33,13 +35,13 @@
         <activity android:name=".GameOverActivity" />
         <activity android:name=".MultiplayerQuiz" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".LoginActivity">
-        </activity>
+        <activity android:name=".LoginActivity"></activity>
 
         <service
             android:name="com.codeschool.Models.NotificationService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
