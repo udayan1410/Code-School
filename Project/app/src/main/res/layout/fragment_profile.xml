@@ -254,8 +254,10 @@
                         android:layout_height="200dp"
                         android:layout_below="@+id/multiPlayerText"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:src="@mipmap/blue_badge" />
+                        android:layout_margin="15dp"
+                        android:padding="10dp"
+                        android:scaleType="fitCenter"
+                         />
 
                     <TextView
                         android:id="@+id/multiPlayerText"

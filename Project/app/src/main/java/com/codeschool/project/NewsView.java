@@ -22,7 +22,7 @@ public class NewsView extends AppCompatActivity {
 
 
     WebView webview;
-    FrameLayout vidFrame;
+
     String url;
 
 
@@ -32,7 +32,6 @@ public class NewsView extends AppCompatActivity {
         setContentView(R.layout.activity_news_view);
 
         webview = findViewById(R.id.webview);
-        vidFrame = findViewById(R.id.vidFrame);
 
         url = getIntent().getStringExtra("url");
 

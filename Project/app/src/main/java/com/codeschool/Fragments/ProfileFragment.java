@@ -44,6 +44,7 @@ public class ProfileFragment extends Fragment {
     Gson gson;
     DBHelper dbHelper;
     Handler mHandler;
+    ImageView playerBadge;
     View courseAndroidProgress, courseJavaProgress;
     public static final int TOTAL_WIDTH = Resources.getSystem().getDisplayMetrics().widthPixels;
     int androidCourseCompletedMaxWidth;
@@ -75,22 +76,12 @@ public class ProfileFragment extends Fragment {
                     else
                         Log.d("TAG","JOB scheduled failed");
 
-/*
-            //Setting up notificaiton
-            notificationManagerCompat =  notificationManagerCompat.from(getContext());
-            notification = new NotificationCompat.Builder(getContext(), NotificationMaker.Channel_LoginBack)
-                    .setContentTitle("Code School Login Reminder")
-                    .setContentText("Come back and practice multiplayer quizzes with real players online!")
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setSmallIcon(R.drawable.android_image)
-                    .build();
-
-            notificationManagerCompat.notify(1, notification);*/
-
                     getActivity().finish();
                 }
         );
+
+
+
 
         return v;
     }
@@ -106,6 +97,7 @@ public class ProfileFragment extends Fragment {
         javaCompletedPercent = v.findViewById(R.id.javaCompletedPercent);
         courseAndroidProgress = v.findViewById(R.id.courseAndroidProgress);
         courseJavaProgress = v.findViewById(R.id.courseJavaProgress);
+        playerBadge = v.findViewById(R.id.playerBadge);
 
 
         //Width for progress
@@ -123,8 +115,19 @@ public class ProfileFragment extends Fragment {
         currentPlayerStreakText.setText(loginStatusModel.getUserData().getcurrentStreak());
         multiPlayerStreakText.setText(loginStatusModel.getUserData().getMultiPlayerStreak());
 
-        //Getting percentage completed data from DB
+        //Setting according to the badge
+        Integer multiplayerStreak = Integer.parseInt(loginStatusModel.getUserData().getMultiPlayerStreak());
+        int badgeImage = R.mipmap.bronze_badge;
 
+        if(multiplayerStreak > 5 && multiplayerStreak<=8)
+            badgeImage = R.mipmap.silver_badge;
+
+        else if(multiplayerStreak > 8)
+            badgeImage = R.mipmap.gold_badge;
+
+        Glide.with(getContext()).load(badgeImage).into(playerBadge);
+
+        //Getting percentage completed data from DB
         int androidPecent = dbHelper.totalCompletionPercent("Android");
         int javaPecent = dbHelper.totalCompletionPercent("Java");
 
